@@ -1,0 +1,61 @@
+# $Id$
+#
+# French translation of Drupal (general)
+# Copyright YEAR NAME <EMAIL@ADDRESS>
+# Generated from files:
+#  socialworks.module: n/a
+#  socialworks.info: n/a
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"POT-Creation-Date: 2014-10-30 11:17+0100\n"
+"PO-Revision-Date: 2014-10-30 11:20+0100\n"
+"Last-Translator: Axel Roche <axel@aquelito.fr>\n"
+"Language-Team: French <EMAIL@ADDRESS>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n>1);\n"
+"Language: fr\n"
+"X-Generator: Poedit 1.6.4\n"
+
+#: socialworks.module:17
+msgid "[local] Social Networks"
+msgstr "[local] Réseaux sociaux"
+
+#: socialworks.module:45
+msgid "Follow us"
+msgstr "Nous suivre"
+
+#: socialworks.module:48
+msgid "Follow !sitename on Facebook"
+msgstr "Suivre !sitename sur Facebook"
+
+#: socialworks.module:53
+msgid "Follow !sitename on Twitter"
+msgstr "Suivre !sitename sur Twitter"
+
+#: socialworks.module:58
+msgid "Follow !sitename on Linkedin"
+msgstr "Suivre !sitename sur Linkedin"
+
+#: socialworks.module:63
+msgid "Follow !sitename on Pinterest"
+msgstr "Suivre !sitename sur Pinterest"
+
+#: socialworks.module:68
+msgid "Follow !sitename on Google+"
+msgstr "Suivre !sitename sur Google+"
+
+#: socialworks.info:0
+msgid "Socialworks Block"
+msgstr "Bloc réseaux sociaux"
+
+#: socialworks.info:0
+msgid "Created block for Social Networks Compagny"
+msgstr "Créer un bloc pour les réseaux sociaux"
+
+#: socialworks.info:0
+msgid "aQuElito"
+msgstr "aQuElito"

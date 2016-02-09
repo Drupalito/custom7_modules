@@ -1,0 +1,106 @@
+<?php
+
+/**
+ * @file
+ * Created block for account
+ *
+ * @ingroup account
+ */
+
+/**
+ * Implements hook_preprocess_block().
+ *
+ * @see hook_preprocess()
+ */
+function account_preprocess_block(&$variables, $hook) {
+  if ($variables['block_html_id'] == 'block-account-account') {
+    array_unshift($variables['theme_hook_suggestions'], 'block__no_wrapper');
+  }
+}
+
+/**
+ * Implements hook_block_info().
+ *
+ * @see hook_block_info()
+ */
+function account_block_info() {
+  $blocks['account'] = array(
+    'info'   => t('[custom] User Account Informations'),
+    'cache'  => DRUPAL_NO_CACHE,
+    'status' => TRUE,
+    'region' => 'header',
+    'weight' => 1,
+  );
+  return $blocks;
+}
+
+/**
+ * Implements hook_block_view().
+ *
+ * @see hook_block_view()
+ */
+function account_block_view($delta = '') {
+  $block = array();
+  switch ($delta) {
+    case 'account':
+      $block['content'] = array(
+        '#theme' => 'container',
+        '#children' => _account_contents(),
+        '#attributes' => array(
+          'class' => array(
+            'account',
+          ),
+        ),
+      );
+      break;
+  }
+  return $block;
+}
+
+/**
+ * Custom html block.
+ */
+function _account_contents() {
+  global $user;
+
+  if ($user->uid) {
+
+    $user_data = user_load($user->uid);
+
+    $output_name = (!empty($user_data->field_lastname[LANGUAGE_NONE][0]['safe_value']) && !empty($user_data->field_firstname[LANGUAGE_NONE][0]['safe_value'])) ? $user_data->field_firstname[LANGUAGE_NONE][0]['safe_value'] . ' ' . $user_data->field_lastname[LANGUAGE_NONE][0]['safe_value'] : $user->name;
+
+    $link_label = t('Welcome !username', array('!username' => $output_name));
+
+    $link_options = array(
+      'attributes' => array(
+        'rel' => array('nofollow'),
+      ),
+      'html' => TRUE,
+    );
+
+    if (arg(0) == 'user' && is_numeric(arg(1)) && arg(2) === NULL) {
+      $link_options['attributes']['title'] = $link_label . ' ' . t('(Current page)');
+    }
+
+    $login_output = '<p class="mvn"><span class="bold">' . l($link_label, 'user', $link_options) . '</span> (' . l('<small>' . t('Logout') . '</small>', 'user/logout', array('attributes' => array('rel' => array('nofollow')), 'html' => TRUE)) . ')</p>';
+  }
+  else {
+
+    $link_label = t('Account / Signup');
+
+    $link_options = array(
+      'attributes' => array(
+        'rel' => array('nofollow'),
+      ),
+      'html' => TRUE,
+    );
+
+    if (arg(0) == 'user' && arg(1) === NULL) {
+      $link_options['attributes']['title'] = $link_label . ' ' . t('(Current page)');
+    }
+
+    $login_output = '<p class="bold mvn">' . l($link_label, 'user', $link_options) . '</p>';
+  }
+
+  return $login_output;
+}

@@ -1,0 +1,37 @@
+# $Id$
+#
+# French translation of Drupal (general)
+# Copyright YEAR NAME <EMAIL@ADDRESS>
+# Generated from files:
+#  breadcrumb.module: n/a
+#  breadcrumb.info: n/a
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"POT-Creation-Date: 2014-10-29 17:54+0100\n"
+"PO-Revision-Date: 2014-10-29 17:57+0100\n"
+"Last-Translator: Axel Roche <axel@aquelito.fr>\n"
+"Language-Team: French <EMAIL@ADDRESS>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n>1);\n"
+"Language: fr\n"
+"X-Generator: Poedit 1.6.4\n"
+
+#: breadcrumb.module:17
+msgid "[local] Breadcrumb"
+msgstr "[local] Fils d'Ariane"
+
+#: breadcrumb.info:0
+msgid "Breadcrumb Block"
+msgstr "Bloc Fils d'Ariane"
+
+#: breadcrumb.info:0
+msgid "Created block for breadcrumb"
+msgstr "Créer un bloc pour le fils d'Ariane"
+
+#: breadcrumb.info:0
+msgid "aQuElito"
+msgstr "aQuElito"

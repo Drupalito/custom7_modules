@@ -1,0 +1,210 @@
+<?php
+
+/**
+ * @file
+ * Module installation
+ *
+ * @ingroup userextend
+ */
+
+/**
+ * Implements hook_enable().
+ *
+ * @see hook_enable()
+ */
+function userextend_enable() {
+
+  // Create User fields.
+  if (!field_info_field('field_firstname')) {
+
+    // Create the field singleton.
+    $field = array(
+      'field_name' => 'field_firstname',
+      'type' => 'text',
+    );
+
+    $field = field_create_field($field);
+
+    // Create the instance_user on the bundle.
+    $instance_user['field_firstname'] = array(
+      'field_name' => $field['field_name'],
+      'entity_type' => 'user',
+      'bundle' => 'user',
+      'label' => st('First Name'),
+      'required' => TRUE,
+      'settings' => array(
+        'user_register_form' => 1,
+      ),
+      'widget' => array(
+        'weight' => -101,
+        'type' => 'textfield',
+        'maxlength' => 255,
+        'size' => 60,
+      ),
+      'display' => array(
+        'default' => array(
+          'label' => 'hidden',
+          'type' => 'hidden',
+        ),
+      ),
+    );
+  }
+  if (!field_info_field('field_lastname')) {
+
+    // Create the field singleton.
+    $field = array(
+      'field_name' => 'field_lastname',
+      'type' => 'text',
+    );
+
+    $field = field_create_field($field);
+
+    // Create the instance_user on the bundle.
+    $instance_user['field_lastname'] = array(
+      'field_name' => $field['field_name'],
+      'entity_type' => 'user',
+      'bundle' => 'user',
+      'label' => st('Last Name'),
+      'required' => TRUE,
+      'settings' => array(
+        'user_register_form' => 1,
+      ),
+      'widget' => array(
+        'weight' => -102,
+        'type' => 'textfield',
+        'maxlength' => 255,
+        'size' => 60,
+      ),
+      'display' => array(
+        'default' => array(
+          'label' => 'hidden',
+          'type' => 'hidden',
+        ),
+      ),
+    );
+  }
+  if (!field_info_field('field_gender')) {
+
+    // Create the field singleton.
+    $field = array(
+      'field_name' => 'field_gender',
+      'type' => 'list_integer',
+      'settings' => array(
+        'allowed_values' => array(
+          '0' => 'Woman',
+          '1' => 'Man',
+        ),
+      ),
+    );
+
+    $field = field_create_field($field);
+
+    $instance_user['field_gender'] = array(
+      'field_name' => $field['field_name'],
+      'entity_type' => 'user',
+      'bundle' => 'user',
+      'type' => 'list_integer',
+      'label' => st('Gender'),
+      'foreign keys' => array(),
+      'cardinality' => 1,
+      'required' => TRUE,
+      'widget' => array(
+        'weight' => -103,
+        'type' => 'options_buttons',
+      ),
+      'settings' => array(
+        'user_register_form' => 1,
+      ),
+      'display' => array(
+        'default' => array(
+          'label' => 'hidden',
+          'type' => 'hidden',
+        ),
+      ),
+    );
+  }
+  if (!field_info_field('field_birthday')) {
+
+    // Create the field singleton.
+    $field = array(
+      'field_name' => 'field_birthday',
+      'type' => 'datestamp',
+      'settings' => array(
+        'granularity' => array(
+          'day'   => 'day',
+          'month' => 'month',
+          'year'  => 'year',
+        ),
+      ),
+    );
+    $field = field_create_field($field);
+
+    $instance_user['field_birthday'] = array(
+      'field_name' => $field['field_name'],
+      'entity_type' => 'user',
+      'bundle' => 'user',
+      'type' => 'date',
+      'label' => st('Birthday'),
+      'required' => TRUE,
+      'widget' => array(
+        'weight' => 1,
+        'type' => 'date_select',
+        'settings' => array(
+          'increment' => '1',
+          'input_format' => 'd-m-Y',
+          'input_format_custom' => '',
+          'label_position' => 'above',
+          'repeat_collapsed' => 0,
+          'text_parts' => array(),
+          'year_range' => '-100:-18',
+        ),
+      ),
+      'settings' => array(
+        'default_format' => 'short',
+        'default_value' => 'blank',
+        'user_register_form' => 1,
+      ),
+      'display' => array(
+        'default' => array(
+          'label' => 'hidden',
+          'type' => 'hidden',
+        ),
+      ),
+    );
+  }
+
+  if (!empty($instance_user)) {
+    foreach ($instance_user as $instance_user_field) {
+      field_create_instance($instance_user_field);
+    }
+  }
+}
+
+/**
+ * Implements hook_install().
+ *
+ * @see hook_install()
+function userextend_install() {
+
+  // Create a Home link in the main menu.
+  $item = array(
+    'link_title' => st('Edit profile'),
+    'link_path' => 'user/[current-user:uid]/edit',
+    'menu_name' => 'user-menu',
+    'weight' => 3,
+    'menu_token_enabled' => TRUE,
+  );
+  menu_link_save($item);
+
+  // Create a Home link in the main menu.
+  $item = array(
+    'link_title' => st('Edit password'),
+    'link_path' => 'user/[current-user:uid]/password',
+    'menu_name' => 'user-menu',
+    'weight' => 3,
+    'menu_token_enabled' => TRUE,
+  );
+  menu_link_save($item);
+
+}
+ */

@@ -1,0 +1,162 @@
+# $Id$
+#
+# LANGUAGE translation of Drupal (general)
+# Copyright YEAR NAME <EMAIL@ADDRESS>
+# Generated from files:
+#  userextend.module: n/a
+#  userextend.info: n/a
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"POT-Creation-Date: 2014-10-30 10:55+0100\n"
+"PO-Revision-Date: 2014-11-16 04:22+0100\n"
+"Last-Translator: Axel Roche <axel@aquelito.fr>\n"
+"Language-Team: French <EMAIL@ADDRESS>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n>1);\n"
+"Language: fr\n"
+"X-Generator: Poedit 1.6.4\n"
+
+#: userextend.module:12
+msgid ""
+"Since the dashboard <q>My account</q>, you can get an overview of your "
+"recent activity and update your account information. Select a tab to view "
+"and edit your information."
+msgstr ""
+"Depuis le tableau de bord <q>Mon compte</q>, vous pouvez obtenir un aperçu "
+"de votre activité récente et mettre à jour vos informations de compte. "
+"Sélectionnez un onglet pour afficher et modifier vos informations."
+
+#: userextend.module:18;84
+msgid "Contact"
+msgstr "Contact"
+
+#: userextend.module:24
+msgid "Civility"
+msgstr "Civilité"
+
+#: userextend.module:32
+msgid "Firstname"
+msgstr "Prénom"
+
+#: userextend.module:40
+msgid "Lastname"
+msgstr "Nom"
+
+#: userextend.module:48
+msgid "Birthday"
+msgstr "Anniversaire"
+
+#: userextend.module:55
+msgid "Email"
+msgstr "Email"
+
+#: userextend.module:60
+msgid "Role"
+msgstr "Rôle"
+
+#: userextend.module:65
+msgid "Status"
+msgstr "Status"
+
+#: userextend.module:66
+msgid "Active"
+msgstr "Actif"
+
+#: userextend.module:66
+msgid "Blocked"
+msgstr "Bloqué"
+
+#: userextend.module:79
+msgid "Introduction"
+msgstr "Introduction"
+
+#: userextend.module:80
+msgid "Introduction texte."
+msgstr "Texte d'introduction"
+
+#: userextend.module:85
+msgid "Personal user information."
+msgstr "Informations personnelles"
+
+#: userextend.module:149;164;179;195;281
+msgid ""
+"All fields marked with an <abbr class=\"required\">*</abbr> are required."
+msgstr ""
+"Tous les champs avec un <abbr class=\"required\">*</abbr> sont obligatoires."
+
+#: userextend.module:194
+msgid ""
+"Enter the e-mail use to connect to and click <q>Reset Password</q>.  We will "
+"send you an e-mail with a link that lets you reset your password."
+msgstr ""
+"Indiquer votre e-mail et cliquer sur <q>Réinitialiser le mot de passe</q>. "
+"Nous vous enverrons un e-mail avec un lien qui vous permet de réinitialiser "
+"votre mot de passe."
+
+#: userextend.module:209
+msgid "Create new account"
+msgstr "Créer un nouveau compte"
+
+#: userextend.module:215
+msgid "Reset password"
+msgstr "Réinitialiser le mot de passe"
+
+#: userextend.module:221
+msgid "Log in"
+msgstr "Se connecter"
+
+#: userextend.module:227
+msgid "Save changes"
+msgstr "Enregistrer"
+
+#: userextend.module:247
+msgid "Change password"
+msgstr "Changer de mot de passe"
+
+#: userextend.module:248
+msgid "You can change your password here."
+msgstr "Vous allez pouvoir changer votre mot de passe."
+
+#: userextend.module:292
+msgid "Current password"
+msgstr "Mot de passe actuel"
+
+#: userextend.module:293
+msgid "Please enter your current password"
+msgstr "Indiquer votre mot de passe actuel"
+
+#: userextend.module:302
+msgid "New password"
+msgstr "Nouveau mot de passe"
+
+#: userextend.module:310;331
+msgid "Confirm new password"
+msgstr "Confirmer le mot de passe"
+
+#: userextend.module:311
+msgid "Enter the same password in both fields"
+msgstr "Entrer le même mot de passe dans les deux champs"
+
+#: userextend.module:342
+msgid "The current password you provided is incorrect."
+msgstr "Le mot de passe actuel est incorrect."
+
+#: userextend.module:356
+msgid "Your password has been changed."
+msgstr "Votre mot de passe a été changé"
+
+#: userextend.info:0
+msgid "User Extend"
+msgstr "Profil extension"
+
+#: userextend.info:0
+msgid "User Profil Extension"
+msgstr "Extension du profil utilisateur"
+
+#: userextend.info:0
+msgid "aQuElito"
+msgstr "aQuElito"

@@ -1,0 +1,271 @@
+<?php
+
+/**
+ * @file
+ * User Profil Extension
+ *
+ * @ingroup userextend
+ */
+
+/**
+ * Implements hook_permission().
+ *
+ * @see hook_permission()
+ */
+function userextend_permission() {
+  return array(
+    'userextend show civility' => array(
+      'title' => t('View user civility in profiles'),
+      'restrict access' => TRUE,
+    ),
+    'userextend show name' => array(
+      'title' => t('View user lastname and firstname in profiles'),
+      'restrict access' => TRUE,
+    ),
+    'userextend show birthday' => array(
+      'title' => t('View user birthday in profiles'),
+      'restrict access' => TRUE,
+    ),
+    'userextend show roles' => array(
+      'title' => t('View user roles in profiles'),
+      'restrict access' => TRUE,
+    ),
+  );
+}
+
+/**
+ * Implements hook_user_view().
+ *
+ * @see hook_user_view()
+ */
+function userextend_user_view($account, $view_mode, $langcode) {
+  global $user;
+
+  if ($user->uid == $account->uid) {
+    $account->content['intro'] = array(
+      '#weight' => 1,
+      '#markup' => '<p>' . t('Since the dashboard <q>My account</q>, you can get an overview of your recent activity and update your account information. Select a tab to view and edit your information.') . '</p>',
+    );
+  }
+
+  $account->content['contact'] = array(
+    '#type' => 'user_profile_category',
+    '#weight' => 2,
+    '#title' => t('Contact'),
+  );
+
+  if (user_access('access user profiles') && user_access('userextend show civility')) {
+    $account->content['contact']['civility'] = array(
+      '#type' => 'user_profile_item',
+      '#title' => t('Civility') . '&nbsp;:',
+      '#markup' => isset($account->field_civility['und'][0]['value']) ? $account->field_civility['und'][0]['value'] : '-',
+    );
+  }
+
+  if (user_access('access user profiles') && user_access('userextend show name')) {
+    $username = (isset($account->field_firstname['und'][0]['value']) && isset($account->field_firstname['und'][0]['value'])) ? $account->field_firstname['und'][0]['value'] . ' ' . $account->field_lastname['und'][0]['value'] : '-';
+    $account->content['contact']['name'] = array(
+      '#type' => 'user_profile_item',
+      '#title' => t('Name') . '&nbsp;:',
+      '#markup' => $username,
+    );
+  }
+
+  if (user_access('access user profiles') && user_access('userextend show birthday')) {
+    $account->content['contact']['birthday'] = array(
+      '#type' => 'user_profile_item',
+      '#title' => t('Birthday') . '&nbsp;:',
+      '#markup' => isset($account->field_birthday['und'][0]['value']) ? date("d/m/Y", $account->field_birthday['und'][0]['value']) : '-',
+    );
+  }
+
+  if (user_access('access user profiles') && user_access('userextend show roles')) {
+    $account->content['contact']['roles'] = array(
+      '#type' => 'user_profile_item',
+      '#title' => t('Role') . '&nbsp;:',
+      '#markup' => implode(', ', $account->roles),
+    );
+  }
+
+  $account->content['contact']['status'] = array(
+    '#type' => 'user_profile_item',
+    '#title' => t('Status') . '&nbsp;:',
+    '#markup' => $account->status == 1 ? t('Active') : t('Blocked'),
+  );
+}
+
+/**
+ * Implements hook_field_extra_fields().
+ *
+ * @see hook_field_extra_fields()
+ */
+function userextend_field_extra_fields() {
+  $extra = array();
+  $extra['user']['user'] = array(
+    'display' => array(
+      'intro' => array(
+        'label' => t('Introduction'),
+        'description' => t('Introduction texte.'),
+        'weight' => 1,
+      ),
+      'contact' => array(
+        'label' => t('Contact'),
+        'description' => t('Personal user information.'),
+        'weight' => 2,
+      ),
+    ),
+  );
+  return $extra;
+}
+
+/**
+ * Implements hook_theme().
+ *
+ * @see hook_theme()
+ */
+function userextend_theme() {
+  $items = array();
+  $items['user_login'] = array(
+    'render element' => 'form',
+    'path' => drupal_get_path('module', 'userextend') . '/templates',
+    'template' => 'user-login',
+    'preprocess functions' => array(
+      'userextend_preprocess_user_login',
+    ),
+  );
+  $items['user_register_form'] = array(
+    'render element' => 'form',
+    'path' => drupal_get_path('module', 'userextend') . '/templates',
+    'template' => 'user-register-form',
+    // 'access arguments' => 'user_is_logged_out',
+    'preprocess functions' => array(
+      'userextend_preprocess_user_register_form',
+    ),
+  );
+  $items['user_pass'] = array(
+    'render element' => 'form',
+    'path' => drupal_get_path('module', 'userextend') . '/templates',
+    'template' => 'user-pass',
+    // 'access arguments' => 'user_is_logged_out',
+    'preprocess functions' => array(
+      'userextend_preprocess_user_pass',
+    ),
+  );
+  $items['user_profile_form'] = array(
+    'render element' => 'form',
+    'path' => drupal_get_path('module', 'userextend') . '/templates',
+    'template' => 'user-profile-form',
+    'preprocess functions' => array(
+      'userextend_preprocess_user_profile_form',
+    ),
+  );
+
+  return $items;
+}
+
+/**
+ * Implements hook_preprocess_user_login().
+ *
+ * @see hook_preprocess()
+ */
+function userextend_preprocess_user_login(&$variables) {
+
+  $variables['attributes_array'][] = '';
+  $variables['classes_array'][] = '';
+
+  $variables['title_attributes_array']['class'][] = '';
+  $variables['content_attributes_array']['class'][] = '';
+
+  $variables['intro_required'] = t('All fields marked with an <abbr class="required">*</abbr> are required.');
+}
+
+/**
+ * Implements hook_preprocess_user_register_form().
+ *
+ * @see hook_preprocess()
+ */
+function userextend_preprocess_user_register_form(&$variables) {
+
+  $variables['attributes_array'][] = '';
+  $variables['classes_array'][] = '';
+
+  $variables['title_attributes_array']['class'][] = '';
+  $variables['content_attributes_array']['class'][] = '';
+
+  $variables['intro_required'] = t('All fields marked with an <abbr class="required">*</abbr> are required.');
+}
+
+/**
+ * Implements hook_preprocess_user_profile_form().
+ *
+ * @see hook_preprocess()
+ */
+function userextend_preprocess_user_profile_form(&$variables) {
+
+  $variables['attributes_array'][] = '';
+  $variables['classes_array'][] = '';
+
+  $variables['title_attributes_array']['class'][] = '';
+  $variables['content_attributes_array']['class'][] = '';
+
+  $variables['intro_required'] = t('All fields marked with an <abbr class="required">*</abbr> are required.');
+}
+
+/**
+ * Implements hook_preprocess_user_pass().
+ *
+ * @see hook_preprocess()
+ */
+function userextend_preprocess_user_pass(&$variables) {
+
+  $variables['attributes_array'][] = '';
+  $variables['classes_array'][] = '';
+
+  $variables['title_attributes_array']['class'][] = '';
+  $variables['content_attributes_array']['class'][] = '';
+
+  $variables['intro_text'] = t('Enter the e-mail use to connect to and click <q>Reset Password</q>.  We will send you an e-mail with a link that lets you reset your password.');
+  $variables['intro_required'] = t('All fields marked with an <abbr class="required">*</abbr> are required.');
+}
+
+/**
+ * Implements hook_form_alter().
+ *
+ * @see hook_form_alter()
+ */
+function userextend_form_alter(&$form, &$form_state, $form_id) {
+
+  // drupal_set_message("<pre>".print_r($form_id, true)."</pre>");
+
+  if ($form_id == 'user_register_form') {
+    drupal_set_title(t('Create new account'));
+
+    $form['actions']['submit']['#value'] = t('Create new account');
+    $form['#prefix'] = '<div id="user_registar" class="form form--user_registar">';
+    $form['#suffix'] = '</div>';
+  }
+
+  if ($form_id == 'user_pass') {
+    drupal_set_title(t('Request new password'));
+
+    $form['actions']['submit']['#value'] = t('Reset password');
+    $form['#prefix'] = '<div id="user_pass" class="form form--user_pass">';
+    $form['#suffix'] = '</div>';
+  }
+
+  if ($form_id == 'user_login') {
+    drupal_set_title(t('Log in'));
+
+    $form['actions']['submit']['#value'] = t('Log in');
+    $form['#prefix'] = '<div id="user_login" class="form form--user_login">';
+    $form['#suffix'] = '</div>';
+  }
+
+  if ($form_id == 'user_profile_form') {
+    drupal_set_title(t('Edit my profile'));
+
+    $form['actions']['submit']['#value'] = t('Save changes');
+    $form['#prefix'] = '<div id="user_profile_edit" class="form form--user_edit">';
+    $form['#suffix'] = '</div>';
+  }
+}

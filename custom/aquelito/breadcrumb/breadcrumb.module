@@ -1,0 +1,55 @@
+<?php
+
+/**
+ * @file
+ * Created block for breadcrumb
+ *
+ * @ingroup breadcrumb
+ */
+
+/**
+ * Implements hook_preprocess_block().
+ *
+ * @see hook_preprocess()
+ */
+function breadcrumb_preprocess_block(&$variables, $hook) {
+  if ($variables['block_html_id'] == 'block-breadcrumb-breadcrumb') {
+    array_unshift($variables['theme_hook_suggestions'], 'block__no_wrapper');
+  }
+}
+
+/**
+ * Implements hook_block_info().
+ *
+ * @see hook_block_info()
+ */
+function breadcrumb_block_info() {
+  $blocks['breadcrumb'] = array(
+    'info'       => t('[custom] Breadcrumb'),
+    'cache'      => DRUPAL_NO_CACHE,
+    'status'     => TRUE,
+    'region'     => 'breadcrumb',
+    'weight'     => 0,
+    'visibility' => BLOCK_VISIBILITY_NOTLISTED,
+    'pages'      => '<front>',
+  );
+  return $blocks;
+}
+
+/**
+ * Implements hook_block_view().
+ *
+ * @see hook_block_view()
+ */
+function breadcrumb_block_view($delta = '') {
+  $block = array();
+  switch ($delta) {
+    case 'breadcrumb':
+      $block['content'] = array(
+        '#theme' => 'breadcrumb',
+        '#breadcrumb' => drupal_get_breadcrumb(),
+      );
+      break;
+  }
+  return $block;
+}

@@ -1,0 +1,6 @@
+name = "Address Block"
+description = "Created block for Address Company"
+version = "7.x-1.0"
+core = 7.x
+package = aQuElito
+configure = admin/config/system/site-information

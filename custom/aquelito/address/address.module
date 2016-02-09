@@ -1,0 +1,222 @@
+<?php
+
+/**
+ * @file
+ * Created block for Address Company
+ *
+ * @ingroup address
+ */
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ *
+ * - Ajout d'un titre custom pour la page maintenance
+ */
+function address_form_system_site_maintenance_mode_alter(&$form, &$form_state, $form_id) {
+
+  // Create the form using Forms API.
+  $form['sitecustom_maintenance_title'] = array(
+    '#type' => 'textfield',
+    '#title' => 'Titre de la page maintenance',
+    '#default_value' => variable_get('sitecustom_maintenance_title', 'Maintenance en cours.'),
+  );
+  // extra submit form handle
+  $form['#submit'][] = '_address_submit_callback_maintenance';
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ *
+ * - Ajout de nouveaux champs de configuration
+ */
+function address_form_system_site_information_settings_alter(&$form, &$form_state, $form_id) {
+
+  // Create the form using Forms API.
+  $form['sitecustom'] = array(
+    '#group' => 'verticalTabs',
+    '#type' => 'fieldset',
+    '#title' => 'Informations',
+    '#weight' => 80,
+  );
+
+  $site_system = variable_get('site_name', '');
+  $form['sitecustom']['sitecustom_name'] = array(
+    '#required' => TRUE,
+    '#type' => 'textfield',
+    '#title' => t('Company name'),
+    '#default_value' => variable_get('sitecustom_opdate', $site_system),
+    '#description' => t("Place this text in the widget spot on your site."),
+  );
+  $form['sitecustom']['sitecustom_street_line_1'] = array(
+    '#required' => TRUE,
+    '#type' => 'textfield',
+    '#title' => t('Street line 1'),
+    '#default_value' => variable_get('sitecustom_street_line_1', ''),
+  );
+  $form['sitecustom']['sitecustom_street_line_2'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Street line 2'),
+    '#default_value' => variable_get('sitecustom_street_line_2', ''),
+  );
+  $form['sitecustom']['sitecustom_postale_code'] = array(
+    '#required' => TRUE,
+    '#type' => 'textfield',
+    '#title' => t('Postale Code'),
+    '#default_value' => variable_get('sitecustom_postale_code', ''),
+  );
+  $form['sitecustom']['sitecustom_locality'] = array(
+    '#required' => TRUE,
+    '#type' => 'textfield',
+    '#title' => t('Locality'),
+    '#default_value' => variable_get('sitecustom_locality', ''),
+  );
+
+  // Create the form using Forms API.
+  $form['sitecustom_callback'] = array(
+    '#group' => 'verticalTabs',
+    '#type' => 'fieldset',
+    '#title' => 'Callback',
+    '#weight' => 90,
+  );
+
+  $email_system = variable_get('site_mail', '');
+  $form['sitecustom_callback']['sitecustom_email'] = array(
+    '#required' => TRUE,
+    '#type' => 'textfield',
+    '#title' => t('Email'),
+    '#default_value' => variable_get('sitecustom_email', $email_system),
+    '#description' => t("Email Format <strong>(ex: hello@company.com)</strong>"),
+  );
+  $form['sitecustom_callback']['sitecustom_phone1'] = array(
+    '#required' => TRUE,
+    '#type' => 'textfield',
+    '#title' => t('Phone'),
+    '#default_value' => variable_get('sitecustom_phone1', ''),
+    '#description' => t("Number phone <strong>(ex: +33555555555)</strong>"),
+  );
+  $form['sitecustom_callback']['sitecustom_fax1'] = array(
+    '#required' => FALSE,
+    '#type' => 'textfield',
+    '#title' => t('Fax Number'),
+    '#default_value' => variable_get('sitecustom_fax1', ''),
+    '#description' => t("Number phone <strong>(ex: +33555555555)</strong>"),
+  );
+
+  // extra submit form handle
+  $form['#submit'][] = '_address_submit_callback_settings';
+}
+
+/**
+ * Implementation of _address_submit_callback_settings().
+ *
+ * - Handle form submition
+ */
+function _address_submit_callback_settings($form, &$form_state, $form_id) {
+
+  $values = $form_state['values'];
+
+  if (!empty($values['sitecustom_name'])) {
+    variable_set('sitecustom_name', $values['sitecustom_name']);
+  }
+  if (!empty($values['sitecustom_street_line_1'])) {
+    variable_set('sitecustom_street_line_1', $values['sitecustom_street_line_1']);
+  }
+  if (!empty($values['sitecustom_street_line_2'])) {
+    variable_set('sitecustom_street_line_2', $values['sitecustom_street_line_2']);
+  }
+  if (!empty($values['sitecustom_postale_code'])) {
+    variable_set('sitecustom_postale_code', $values['sitecustom_postale_code']);
+  }
+  if (!empty($values['sitecustom_locality'])) {
+    variable_set('sitecustom_locality', $values['sitecustom_locality']);
+  }
+
+  if (!empty($values['sitecustom_email'])) {
+    variable_set('sitecustom_email', $values['sitecustom_email']);
+  }
+  if (!empty($values['sitecustom_phone1'])) {
+    variable_set('sitecustom_phone1', $values['sitecustom_phone1']);
+  }
+  if (!empty($values['sitecustom_fax1'])) {
+    variable_set('sitecustom_fax1', $values['sitecustom_fax1']);
+  }
+}
+
+/**
+ * Implementation of _address_submit_callback_maintenance().
+ *
+ * - Handle form submition
+ */
+function _address_submit_callback_maintenance($form, &$form_state, $form_id){
+
+  $values = $form_state['values'];
+
+  if (!empty($values['sitecustom_maintenance_title'])) {
+    variable_set('sitecustom_maintenance_title', $values['sitecustom_maintenance_title']);
+  }
+}
+
+/**
+ * Implements hook_theme().
+ *
+ * @see hook_theme()
+ */
+function address_theme($existing, $type, $theme, $path) {
+  return array(
+    'address' => array(
+      'template' => 'address',
+      'variables' => array(
+        'params' => array()
+      ),
+    )
+  );
+}
+
+/**
+ * Implements hook_block_info().
+ *
+ * @see hook_block_info()
+ */
+function address_block_info() {
+  $blocks['address'] = array(
+    'info'   => t('[custom] Address Compagny'),
+    'cache'  => DRUPAL_NO_CACHE,
+    'status' => TRUE,
+    'region' => 'footer',
+  );
+  return $blocks;
+}
+
+/**
+ * Implements hook_block_view().
+ *
+ * @see hook_block_view()
+ */
+function address_block_view($delta = '') {
+  $block = array();
+  switch ($delta) {
+    case 'address':
+      $block['content'] = _address_contents();
+      break;
+  }
+  return $block;
+}
+
+/**
+ * Custom html block.
+ */
+function _address_contents() {
+
+  $params = array();
+  $params['name'] = variable_get('sitecustom_name');
+  $params['street_line_1'] = variable_get('sitecustom_street_line_1');
+  $params['street_line_2'] = variable_get('sitecustom_street_line_2') ? variable_get('sitecustom_street_line_2') : NULL;
+  $params['postale_code'] = variable_get('sitecustom_postale_code');
+  $params['locality'] = variable_get('sitecustom_locality');
+  $params['email'] = variable_get('sitecustom_email');
+  $params['phone'] = variable_get('sitecustom_phone1') ? variable_get('sitecustom_phone1') : NULL;
+  $params['fax'] = variable_get('sitecustom_fax1') ? variable_get('sitecustom_fax1') : NULL;
+
+  $output = theme('address', $params);
+  return $output;
+}

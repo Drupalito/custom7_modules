@@ -1,0 +1,8 @@
+name = "User Extend"
+description = "User Profil Extension"
+version = "7.x-1.0"
+core = 7.x
+package = aQuElito
+
+; Dependencies
+dependencies[] = menu_token
