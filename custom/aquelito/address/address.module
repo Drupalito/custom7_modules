@@ -111,7 +111,7 @@ function address_form_system_site_information_settings_alter(&$form, &$form_stat
  *
  * - Handle form submition
  */
-function _address_submit_callback_settings($form, &$form_state, $form_id) {
+function _address_submit_callback_settings($form, &$form_state) {
 
   $values = $form_state['values'];
 
@@ -164,6 +164,7 @@ function _address_submit_callback_maintenance($form, &$form_state, $form_id){
 function address_theme($existing, $type, $theme, $path) {
   return array(
     'address' => array(
+      'path' => $path . '/templates',
       'template' => 'address',
       'variables' => array(
         'params' => array()
