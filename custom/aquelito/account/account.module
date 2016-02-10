@@ -73,16 +73,17 @@ function _account_contents() {
 
     $link_options = array(
       'attributes' => array(
+        'class' => array('account__link'),
         'rel' => array('nofollow'),
       ),
       'html' => TRUE,
     );
 
-    if (arg(0) == 'user' && is_numeric(arg(1)) && arg(2) === NULL) {
+    if (arg(0) === 'user' && is_numeric(arg(1)) && arg(2) === NULL) {
       $link_options['attributes']['title'] = $link_label . ' ' . t('(Current page)');
     }
 
-    $login_output = '<p class="mvn"><span class="bold">' . l($link_label, 'user', $link_options) . '</span> (' . l('<small>' . t('Logout') . '</small>', 'user/logout', array('attributes' => array('rel' => array('nofollow')), 'html' => TRUE)) . ')</p>';
+    $login_output = '<p class="account__description mvn"><span class="account__nickname">' . l($link_label, 'user', $link_options) . '</span> (' . l('<small>' . t('Logout') . '</small>', 'user/logout', array('attributes' => array('class' => array('account__logout'), 'rel' => array('nofollow')), 'html' => TRUE)) . ')</p>';
   }
   else {
 
@@ -90,16 +91,17 @@ function _account_contents() {
 
     $link_options = array(
       'attributes' => array(
+        'class' => array('account__link'),
         'rel' => array('nofollow'),
       ),
       'html' => TRUE,
     );
 
-    if (arg(0) == 'user' && arg(1) === NULL) {
+    if (arg(0) === 'user' && arg(1) === NULL) {
       $link_options['attributes']['title'] = $link_label . ' ' . t('(Current page)');
     }
 
-    $login_output = '<p class="bold mvn">' . l($link_label, 'user', $link_options) . '</p>';
+    $login_output = '<p class="account__description mvn">' . l($link_label, 'user', $link_options) . '</p>';
   }
 
   return $login_output;
