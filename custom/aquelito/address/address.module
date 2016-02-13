@@ -17,6 +17,7 @@ function address_form_system_site_maintenance_mode_alter(&$form, &$form_state, $
   // Create the form using Forms API.
   $form['sitecustom_maintenance_title'] = array(
     '#type' => 'textfield',
+    '#weight' => 0,
     '#title' => 'Titre de la page maintenance',
     '#default_value' => variable_get('sitecustom_maintenance_title', 'Maintenance en cours.'),
   );
@@ -147,7 +148,7 @@ function _address_submit_callback_settings($form, &$form_state) {
  *
  * - Handle form submition
  */
-function _address_submit_callback_maintenance($form, &$form_state, $form_id){
+function _address_submit_callback_maintenance($form, &$form_state){
 
   $values = $form_state['values'];
 
