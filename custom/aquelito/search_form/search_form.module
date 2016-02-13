@@ -42,14 +42,14 @@ function search_form_form_search_block_form_alter(&$form, &$form_state, $form_id
 
   $form['search_block_form']['#title'] = t('Search');
   $form['search_block_form']['#title_display'] = 'invisible';
-  $form['search_block_form']['#size'] = 20;
+  $form['search_block_form']['#size'] = 18;
 
   $form['search_block_form']['#attributes']['class'][] = 'search__input';
   $form['search_block_form']['#attributes']['placeholder'] = t('Search');
   $form['search_block_form']['#attributes']['title'] = t('Enter your keywords…');
 
   $form['actions']['#type'] = 'submit';
-  $form['actions']['#value'] = t('Search');
+  $form['actions']['#value'] = t('Ok');
   $form['actions']['#attributes']['class'][] = 'search__submit';
   $form['actions']['#attributes']['title'] = t('Search on website !sitename', array('!sitename' => variable_get('site_name')));
   $form['search_block_form']['#theme_wrappers'][] = 'search_form_wrapper';
