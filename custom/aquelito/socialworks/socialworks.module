@@ -106,7 +106,7 @@ function socialworks_block_info() {
     'info'   => t('[custom] Social Networks Compagny'),
     'cache'  => DRUPAL_NO_CACHE,
     'status' => TRUE,
-    'region' => 'contentinfo',
+    'region' => 'footer',
   );
   return $blocks;
 }
@@ -137,6 +137,7 @@ function _socialworks_contents() {
   $output .= '<p class="mvn"><span class="bold">' . t('Follow us') . '&nbsp;:</span><br />';
 
   $array_social = socialworks_options_link();
+  $item_output = array();
   foreach ($array_social as $key => $values) {
     if (theme_get_setting('starter_company_' . $key)) {
       $value = $values['account'];
@@ -194,6 +195,7 @@ function socialworks_node_view($node, $view_mode, $langcode) {
 
       // Load our module's settings for the field, content type and view mode.
       $format = variable_get('socialworks_' . $field_name . '_settings_node_' . $node->type . '_default');
+      $output_icon = array();
       foreach ($format as $key => $value) {
         $value = $array_social[$key]['share'];
 

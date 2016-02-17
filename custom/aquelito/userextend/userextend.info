@@ -5,4 +5,4 @@ core = 7.x
 package = aQuElito
 
 ; Dependencies
-dependencies[] = menu_token
+; dependencies[] = menu_token

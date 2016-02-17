@@ -123,11 +123,11 @@ function userextend_field_extra_fields() {
  *
  * @see hook_theme()
  */
-function userextend_theme() {
+function userextend_theme($existing, $type, $theme, $path) {
   $items = array();
   $items['user_login'] = array(
     'render element' => 'form',
-    'path' => drupal_get_path('module', 'userextend') . '/templates',
+    'path' => $path . '/templates',
     'template' => 'user-login',
     'preprocess functions' => array(
       'userextend_preprocess_user_login',
@@ -135,7 +135,7 @@ function userextend_theme() {
   );
   $items['user_register_form'] = array(
     'render element' => 'form',
-    'path' => drupal_get_path('module', 'userextend') . '/templates',
+    'path' => $path . '/templates',
     'template' => 'user-register-form',
     // 'access arguments' => 'user_is_logged_out',
     'preprocess functions' => array(
@@ -144,7 +144,7 @@ function userextend_theme() {
   );
   $items['user_pass'] = array(
     'render element' => 'form',
-    'path' => drupal_get_path('module', 'userextend') . '/templates',
+    'path' => $path . '/templates',
     'template' => 'user-pass',
     // 'access arguments' => 'user_is_logged_out',
     'preprocess functions' => array(
@@ -153,7 +153,7 @@ function userextend_theme() {
   );
   $items['user_profile_form'] = array(
     'render element' => 'form',
-    'path' => drupal_get_path('module', 'userextend') . '/templates',
+    'path' => $path . '/templates',
     'template' => 'user-profile-form',
     'preprocess functions' => array(
       'userextend_preprocess_user_profile_form',
@@ -234,8 +234,6 @@ function userextend_preprocess_user_pass(&$variables) {
  * @see hook_form_alter()
  */
 function userextend_form_alter(&$form, &$form_state, $form_id) {
-
-  // drupal_set_message("<pre>".print_r($form_id, true)."</pre>");
 
   if ($form_id == 'user_register_form') {
     drupal_set_title(t('Create new account'));
