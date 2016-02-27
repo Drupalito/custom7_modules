@@ -2,7 +2,7 @@
 
 /**
  * @file
- * Created block for Social Networks
+ * Social Networks Company
  *
  * @ingroup socialworks
  */
@@ -121,6 +121,16 @@ function socialworks_block_view($delta = '') {
   switch ($delta) {
     case 'socialworks':
       $block['content'] = _socialworks_contents();
+      $block['content'] = array(
+        '#theme' => 'container',
+        '#children' => _socialworks_contents(),
+        '#attributes' => array(
+          'class' => array(
+            'socialworks',
+            'mvn',
+          ),
+        ),
+      );
       break;
   }
   return $block;
@@ -133,7 +143,6 @@ function _socialworks_contents() {
   global $user;
 
   $output = '';
-  $output .= '<div class="socialworks mvn">';
   $output .= '<p class="mvn"><span class="bold">' . t('Follow us') . '&nbsp;:</span><br />';
 
   $array_social = socialworks_options_link();
@@ -156,7 +165,7 @@ function _socialworks_contents() {
   }
 
   $output .= implode(' ', $item_output);
-  $output .= '</p></div>';
+  $output .= '</p>';
 
   return $output;
 }

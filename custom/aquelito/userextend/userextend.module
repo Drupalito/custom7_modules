@@ -137,7 +137,6 @@ function userextend_theme($existing, $type, $theme, $path) {
     'render element' => 'form',
     'path' => $path . '/templates',
     'template' => 'user-register-form',
-    // 'access arguments' => 'user_is_logged_out',
     'preprocess functions' => array(
       'userextend_preprocess_user_register_form',
     ),
@@ -146,7 +145,6 @@ function userextend_theme($existing, $type, $theme, $path) {
     'render element' => 'form',
     'path' => $path . '/templates',
     'template' => 'user-pass',
-    // 'access arguments' => 'user_is_logged_out',
     'preprocess functions' => array(
       'userextend_preprocess_user_pass',
     ),

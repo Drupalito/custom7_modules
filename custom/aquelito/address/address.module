@@ -2,7 +2,7 @@
 
 /**
  * @file
- * Created block for Address Company
+ * View the owner's contact
  *
  * @ingroup address
  */
@@ -10,7 +10,7 @@
 /**
  * Implements hook_form_FORM_ID_alter().
  *
- * - Ajout d'un titre custom pour la page maintenance
+ * - Add maintenance page title
  */
 function address_form_system_site_maintenance_mode_alter(&$form, &$form_state, $form_id) {
 
@@ -18,8 +18,8 @@ function address_form_system_site_maintenance_mode_alter(&$form, &$form_state, $
   $form['sitecustom_maintenance_title'] = array(
     '#type' => 'textfield',
     '#weight' => 0,
-    '#title' => 'Titre de la page maintenance',
-    '#default_value' => variable_get('sitecustom_maintenance_title', 'Maintenance en cours.'),
+    '#title' => t('Maintenance page title'),
+    '#default_value' => variable_get('sitecustom_maintenance_title', 'Maintenance in progress.'),
   );
   // extra submit form handle
   $form['#submit'][] = '_address_submit_callback_maintenance';
@@ -28,25 +28,23 @@ function address_form_system_site_maintenance_mode_alter(&$form, &$form_state, $
 /**
  * Implements hook_form_FORM_ID_alter().
  *
- * - Ajout de nouveaux champs de configuration
+ * - Added configuration fields
  */
 function address_form_system_site_information_settings_alter(&$form, &$form_state, $form_id) {
 
-  // Create the form using Forms API.
   $form['sitecustom'] = array(
     '#group' => 'verticalTabs',
     '#type' => 'fieldset',
-    '#title' => 'Informations',
+    '#title' => t('Informations'),
     '#weight' => 80,
   );
 
-  $site_system = variable_get('site_name', '');
+  $site_system = variable_get('site_name');
   $form['sitecustom']['sitecustom_name'] = array(
     '#required' => TRUE,
     '#type' => 'textfield',
     '#title' => t('Company name'),
     '#default_value' => variable_get('sitecustom_opdate', $site_system),
-    '#description' => t("Place this text in the widget spot on your site."),
   );
   $form['sitecustom']['sitecustom_street_line_1'] = array(
     '#required' => TRUE,
@@ -72,11 +70,10 @@ function address_form_system_site_information_settings_alter(&$form, &$form_stat
     '#default_value' => variable_get('sitecustom_locality', ''),
   );
 
-  // Create the form using Forms API.
   $form['sitecustom_callback'] = array(
     '#group' => 'verticalTabs',
     '#type' => 'fieldset',
-    '#title' => 'Callback',
+    '#title' => t('Callback'),
     '#weight' => 90,
   );
 
@@ -103,7 +100,7 @@ function address_form_system_site_information_settings_alter(&$form, &$form_stat
     '#description' => t("Number phone <strong>(ex: +33555555555)</strong>"),
   );
 
-  // extra submit form handle
+  // Submit form.
   $form['#submit'][] = '_address_submit_callback_settings';
 }
 
@@ -181,7 +178,7 @@ function address_theme($existing, $type, $theme, $path) {
  */
 function address_block_info() {
   $blocks['address'] = array(
-    'info'   => t('[custom] Address Compagny'),
+    'info'   => t("[custom] View the owner's contact"),
     'cache'  => DRUPAL_NO_CACHE,
     'status' => TRUE,
     'region' => 'footer',

@@ -15,8 +15,6 @@
 <?php endif; ?>
 
 <?php
-  // drupal_set_message("<pre>".print_r($form, true)."</pre>");
-
   hide($form['body']);
   hide($form['locale']);
   hide($form['timezone']);

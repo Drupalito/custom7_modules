@@ -1,5 +1,5 @@
 name = "Account Block"
-description = "Created block for account"
+description = "Link to user account"
 version = "7.x-1.0"
 core = 7.x
-package = aQuElito
+package = astarter

@@ -1,20 +1,16 @@
 
-<div class="address mvn">
-  <p class="big mbn"><strong><?php print $name; ?></strong></p>
-  <p class="mvn"><?php print $street_line_1; ?>
-
+<div class="address" itemscope itemtype="http://schema.org/Organization">
+  <p><strong itemprop="name"><?php print $name; ?></strong></p>
+  <p itemprop="address" itemscope itemtype="http://schema.org/PostalAddress"><span itemprop="streetAddress"><?php print $street_line_1; ?>
   <?php if (isset($street_line_2)) : ?>
     <br /><?php print $street_line_2; ?>
-  <?php endif; ?>
-
-  <br /><?php print $postale_code; ?> <?php print $locality; ?></p>
-  <p class="mts mbn"><?php print t('Email'); ?>&nbsp;: <span><a href="mailto:<?php print $email; ?>"><?php print $email; ?></a></span></p>
-
+  <?php endif; ?></span>
+  <br /><span itemprop="postalCode"><?php print $postale_code; ?></span> <span itemprop="addressLocality"><?php print $locality; ?></span></p>
+  <p><?php print t('Email'); ?>&nbsp;: <span><a itemprop="email" href="mailto:<?php print $email; ?>"><?php print $email; ?></a></span></p>
   <?php if (isset($phone)) : ?>
-    <p class="mvn"><?php print t('Phone'); ?>&nbsp;: <span><?php print $phone; ?></span></p>
+    <p><?php print t('Phone'); ?>&nbsp;: <span itemprop="telephone"><?php print $phone; ?></span></p>
   <?php endif; ?>
-
   <?php if (isset($fax)) : ?>
-    <p class="mvn"><?php print t('Fax'); ?>&nbsp;: <span><?php print $fax; ?></span></p>
+    <p><?php print t('Fax'); ?>&nbsp;: <span itemprop="faxNumber"><?php print $fax; ?></span></p>
   <?php endif; ?>
 </div>

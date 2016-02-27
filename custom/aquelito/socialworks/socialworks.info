@@ -1,5 +1,5 @@
-name = "Socialworks Block"
-description = "Created block for Social Networks Company"
+name = "Socialworks Block & Node"
+description = "Social Networks Company"
 version = "7.x-1.0"
 core = 7.x
-package = aQuElito
+package = astarter

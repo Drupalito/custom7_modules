@@ -2,7 +2,7 @@
 
 /**
  * @file
- * Module installation
+ * User Profil Extension
  *
  * @ingroup userextend
  */
@@ -179,32 +179,3 @@ function userextend_enable() {
     }
   }
 }
-
-/**
- * Implements hook_install().
- *
- * @see hook_install()
-function userextend_install() {
-
-  // Create a Home link in the main menu.
-  $item = array(
-    'link_title' => st('Edit profile'),
-    'link_path' => 'user/[current-user:uid]/edit',
-    'menu_name' => 'user-menu',
-    'weight' => 3,
-    'menu_token_enabled' => TRUE,
-  );
-  menu_link_save($item);
-
-  // Create a Home link in the main menu.
-  $item = array(
-    'link_title' => st('Edit password'),
-    'link_path' => 'user/[current-user:uid]/password',
-    'menu_name' => 'user-menu',
-    'weight' => 3,
-    'menu_token_enabled' => TRUE,
-  );
-  menu_link_save($item);
-
-}
- */
