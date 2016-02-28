@@ -19,11 +19,7 @@
   hide($form['locale']);
   hide($form['timezone']);
 
-  hide($form['account']['current_pass']);
-  hide($form['account']['pass']);
-  hide($form['account']['pass2']);
-
-  print render($form['field_civility']);
+  print render($form['field_gender']);
   print render($form['account']['mail']);
   print render($form['field_firstname']);
   print render($form['field_lastname']);
