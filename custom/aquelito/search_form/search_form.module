@@ -34,7 +34,7 @@ function search_form_preprocess_search_block_form(&$variables) {
  *
  * @see hook_form()
  */
-function search_form_form_search_block_form_alter(&$form, &$form_state, $form_id) {
+function search_form_form_search_block_form_alter(&$form, &$form_state) {
   $form['#prefix'] = '<div class="search noprint" id="search">';
   $form['#suffix'] = '</div>';
   $form['#attributes']['class'][] = 'mvn';
@@ -53,6 +53,16 @@ function search_form_form_search_block_form_alter(&$form, &$form_state, $form_id
   $form['actions']['#attributes']['class'][] = 'search__submit';
   $form['actions']['#attributes']['title'] = t('Search on website !sitename', array('!sitename' => variable_get('site_name')));
   $form['search_block_form']['#theme_wrappers'][] = 'search_form_wrapper';
+}
+
+function search_form_form_search_form_alter(&$form, &$form_state) {
+  $form['#prefix'] = '<div class="search search--advanced noprint" id="search-advanced">';
+  $form['#suffix'] = '</div>';
+  $form['#attributes']['class'][] = 'mvn';
+  $form['#attributes']['role'] = 'search';
+
+  $form['keys']['#size'] = 18;
+  $form['basic']['keys']['#theme_wrappers'][] = 'search_form_wrapper';
 }
 
 /**
