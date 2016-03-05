@@ -6,9 +6,9 @@
   right: 0; bottom: 0;
   z-index: 10;
   margin-bottom: 0;
-  width: 25px;
-  height: 25px;
-  line-height: 25px;
+  width: 2em;
+  height: 2em;
+  line-height: 2em;
   text-align: center;
   border-bottom: 0;
   overflow: hidden;
