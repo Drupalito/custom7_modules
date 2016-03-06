@@ -43,7 +43,7 @@ function userextend_user_view($account, $view_mode, $langcode) {
 
   if ($user->uid == $account->uid) {
     $account->content['intro'] = array(
-      '#weight' => 1,
+      '#weight' => -99,
       '#markup' => '<p>' . t('Since the dashboard <q>My account</q>, you can get an overview of your recent activity and update your account information. Select a tab to view and edit your information.') . '</p>',
     );
   }
