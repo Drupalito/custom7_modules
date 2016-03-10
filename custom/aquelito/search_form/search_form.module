@@ -63,6 +63,12 @@ function search_form_form_search_form_alter(&$form, &$form_state) {
 
   $form['keys']['#size'] = 18;
   $form['basic']['keys']['#theme_wrappers'][] = 'search_form_wrapper';
+
+  $form['advanced']['keywords']['#prefix'] = '<div class="row"><div class="criterion criterion--keywords col-xs-12 col-sm-4">';
+  $form['advanced']['type']['#prefix'] = '<div class="col-xs-12 col-sm-8"><div class="row"><div class="criterion criterion--type col-xs-12 col-sm-6">';
+  $form['advanced']['language']['#prefix'] = '<div class="criterion criterion--language col-xs-12 col-sm-6">';
+  $form['advanced']['submit']['#prefix'] = '<div class="action col-xs-12">';
+  $form['advanced']['submit']['#suffix'] = '</div></div></div></div>';
 }
 
 /**
