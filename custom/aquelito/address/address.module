@@ -8,6 +8,34 @@
  */
 
 /**
+ * Implements hook_theme_registry_alter().
+ *
+ * - Modify theme logo function
+ */
+function address_theme_registry_alter(&$theme_registry) {
+  $theme_registry['logo']['function'] = 'address_logo';
+}
+
+/**
+ * Implements theme_logo().
+ *
+ * - Add attribute on theme logo
+ */
+function address_logo($variables) {
+
+  $variables['link']['attributes']['itemprop'][] = 'url';
+  $variables['link']['attributes']['id'][] = 'mOrga';
+  $variables['image']['attributes']['itemprop'][] = 'logo';
+  $variables['image']['attributes']['itemprop'][] = 'image';
+
+  $variables['attributes_site_name']['itemprop'][] = 'name';
+  $variables['attributes_site_slogan']['itemprop'][] = 'description';
+
+  $output = module_exists('logo') ? theme_logo($variables) : NULL;
+  return $output;
+}
+
+/**
  * Implements hook_form_FORM_ID_alter().
  *
  * - Add maintenance page title

@@ -1,5 +1,5 @@
 
-<div class="address" itemscope itemtype="http://schema.org/Organization">
+<div class="address" itemscope itemtype="http://schema.org/Organization" itemref="mOrga">
   <p><strong itemprop="name"><?php print $name; ?></strong></p>
   <p itemprop="address" itemscope itemtype="http://schema.org/PostalAddress"><span itemprop="streetAddress"><?php print $street_line_1; ?>
   <?php if (isset($street_line_2)) : ?>

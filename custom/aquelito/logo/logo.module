@@ -1,0 +1,85 @@
+<?php
+
+/**
+ * @file
+ * Create function theme for logo
+ * can be override
+ *
+ * @ingroup logo
+ */
+
+/**
+ * Implements hook_theme().
+ *
+ * @see hook_theme()
+ */
+function logo_theme() {
+  return array(
+    'logo' => array(
+      'variables' => array(
+        // 'logo' => theme_get_setting('logo'),
+        // 'site_name' => variable_get('site_name'),
+        // 'site_slogan' => variable_get('site_slogan'),
+        // 'attributes_link' => array(),
+        // 'attributes_logo' => array(),
+        // 'attributes_site_name' => array(
+        // ),
+        // 'attributes_site_slogan' => array(
+        // ),
+      ),
+    ),
+  );
+}
+
+function theme_logo($variables) {
+
+  $variables['logo'] = theme_get_setting('logo');
+  $variables['site_name'] = variable_get('site_name');
+  $variables['site_slogan'] = variable_get('site_slogan');
+
+  $alt = $variables['site_name'] . ' (' . t('Home') . ')';
+
+  if ($variables['site_name']) {
+    $variables['attributes_site_name']['class'][] = 'logo__name';
+    $logo_output[] = '<span' . drupal_attributes($variables['attributes_site_name']) . '>' . $variables['site_name'] . '</span>';
+  }
+
+  if ($variables['site_slogan']) {
+    $variables['attributes_site_slogan']['class'][] = 'logo__slogan';
+    $logo_output[] = '<span' . drupal_attributes($variables['attributes_site_slogan']) . '>' . $variables['site_slogan'] . '</span>';
+  }
+
+  if ($variables['site_name'] || $variables['site_slogan']) {
+    $logo_brand = implode('', $logo_output);
+    unset($logo_output);
+    $logo_output[] = '<span class="logo__content">';
+    $logo_output[] = $logo_brand;
+    $logo_output[] = '</span>';
+  }
+
+  // Attributes images.
+  $variables['image']['path'] = $variables['logo'];
+  $variables['image']['alt'] = $alt;
+  $variables['image']['attributes']['class'][] = 'logo__image';
+
+  // Attributes link.
+  $variables['link']['attributes']['title'] = $alt;
+  $variables['link']['attributes']['class'][] = 'logo__link';
+  $variables['link']['attributes']['rel'] = 'home';
+  $variables['link']['html'] = TRUE;
+
+  // Markup render
+  $render_logo['logo']['#markup'] = theme('image', $variables['image']);
+  $render_logo['logo_name']['#markup'] = implode('', $logo_output);
+
+  // Build link
+  $logo_link = array(
+    '#theme' => 'link',
+    '#path' => '<front>',
+    '#text' => render($render_logo),
+    '#options' => $variables['link'],
+  );
+
+  $output = '<p class="logo">' . render($logo_link) . '</p>';
+  return $output;
+}
