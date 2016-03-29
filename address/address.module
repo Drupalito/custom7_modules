@@ -49,8 +49,20 @@ function address_form_system_site_maintenance_mode_alter(&$form, &$form_state, $
     '#title' => t('Maintenance page title'),
     '#default_value' => variable_get('sitecustom_maintenance_title', 'Maintenance in progress.'),
   );
-  // extra submit form handle
-  $form['#submit'][] = '_address_submit_callback_maintenance';
+
+  $form['maintenance_mode_message']['#rows'] = 10;
+
+  // Show the token browser.
+  if (module_exists('token')) {
+    $form['available_tokens'] = array(
+      '#value' => 'Browse available tokens',
+      '#theme' => 'token_tree',
+      '#token_types' => array('site', 'sitecustom'),
+      '#weight' => 100,
+      '#dialog' => TRUE,
+    );
+  }
+
 }
 
 /**

@@ -16,17 +16,7 @@
 function logo_theme() {
   return array(
     'logo' => array(
-      'variables' => array(
-        // 'logo' => theme_get_setting('logo'),
-        // 'site_name' => variable_get('site_name'),
-        // 'site_slogan' => variable_get('site_slogan'),
-        // 'attributes_link' => array(),
-        // 'attributes_logo' => array(),
-        // 'attributes_site_name' => array(
-        // ),
-        // 'attributes_site_slogan' => array(
-        // ),
-      ),
+      'variables' => array(),
     ),
   );
 }
