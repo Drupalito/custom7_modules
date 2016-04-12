@@ -254,6 +254,7 @@ function _address_contents() {
   $params['locality'] = variable_get('sitecustom_locality');
   $params['email'] = variable_get('sitecustom_email');
   $params['phone'] = variable_get('sitecustom_phone1') ? variable_get('sitecustom_phone1') : NULL;
+  $params['phone_link'] = variable_get('sitecustom_phone1') ? str_replace(' ', '', preg_replace('/^0/', '+33', variable_get('sitecustom_phone1'))) : NULL;
   $params['fax'] = variable_get('sitecustom_fax1') ? variable_get('sitecustom_fax1') : NULL;
 
   $output = theme('address', $params);
