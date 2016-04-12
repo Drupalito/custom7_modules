@@ -61,14 +61,16 @@ function search_form_form_search_form_alter(&$form, &$form_state) {
   $form['#attributes']['class'][] = 'mvn';
   $form['#attributes']['role'] = 'search';
 
-  $form['keys']['#size'] = 18;
+  $form["basic"]['keys']['#size'] = 18;
+  $form["basic"]['keys']['#attributes']['class'][] = 'search__input';
+  $form["basic"]['keys']['#attributes']['placeholder'] = t('Search on website !sitename', array('!sitename' => variable_get('site_name')));
   $form['basic']['keys']['#theme_wrappers'][] = 'search_form_wrapper';
 
   $form['advanced']['keywords']['#prefix'] = '<div class="row"><div class="criterion criterion--keywords col-xs-12 col-sm-4">';
   $form['advanced']['type']['#prefix'] = '<div class="col-xs-12 col-sm-8"><div class="row"><div class="criterion criterion--type col-xs-12 col-sm-6">';
   $form['advanced']['language']['#prefix'] = '<div class="criterion criterion--language col-xs-12 col-sm-6">';
-  $form['advanced']['submit']['#prefix'] = '</div><div class="action col-xs-12">';
-  $form['advanced']['submit']['#suffix'] = '</div></div></div>';
+  $form['advanced']['submit']['#prefix'] = '</div><div class="row"><div class="action col-xs-12">';
+  $form['advanced']['submit']['#suffix'] = '</div></div></div></div>';
 }
 
 /**
