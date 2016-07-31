@@ -13,21 +13,4 @@
 <?php if (render($intro_required)): ?>
 <p class="form__description"><?php print render($intro_required); ?></p>
 <?php endif; ?>
-
-<?php
-  hide($form['body']);
-  hide($form['locale']);
-  hide($form['timezone']);
-
-  print render($form['field_gender']);
-  print render($form['account']['mail']);
-  print render($form['field_firstname']);
-  print render($form['field_lastname']);
-  print render($form['field_birthday']);
-
-  print drupal_render_children($form);
-
-  print render($form['form_build_id']);
-  print render($form['form_id']);
-  print render($form['form_token']);
-?>
+<?php print drupal_render_children($form); ?>
