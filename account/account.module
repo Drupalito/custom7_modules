@@ -43,18 +43,27 @@ function account_block_view($delta = '') {
   $block = array();
   switch ($delta) {
     case 'account':
-      $block['content'] = array(
-        '#theme' => 'container',
-        '#children' => _account_contents(),
-        '#attributes' => array(
-          'class' => array(
-            'account',
-          ),
-        ),
-      );
+      $block['content'] = _account_contents();
       break;
   }
   return $block;
+}
+
+/**
+ * Implements hook_theme().
+ *
+ * @see hook_theme()
+ */
+function account_theme($existing, $type, $theme, $path) {
+  return array(
+    'account' => array(
+      'path' => $path . '/templates',
+      'template' => 'account',
+      'variables' => array(
+        'params' => array()
+      ),
+    )
+  );
 }
 
 /**
@@ -62,6 +71,8 @@ function account_block_view($delta = '') {
  */
 function _account_contents() {
   global $user;
+
+  $params = array();
 
   if ($user->uid) {
 
@@ -83,7 +94,8 @@ function _account_contents() {
       $link_options['attributes']['title'] = $link_label . ' ' . t('(Current page)');
     }
 
-    $login_output = '<p class="account__description mvn"><span class="account__nickname">' . l($link_label, 'user', $link_options) . '</span> (' . l('<small>' . t('Logout') . '</small>', 'user/logout', array('attributes' => array('class' => array('account__logout'), 'rel' => array('nofollow')), 'html' => TRUE)) . ')</p>';
+    $params['profil'] = l($link_label, 'user', $link_options);
+    $params['logout'] = l('<small>' . t('Logout') . '</small>', 'user/logout', array('attributes' => array('class' => array('account__logout'), 'rel' => array('nofollow')), 'html' => TRUE));
   }
   else {
 
@@ -101,8 +113,10 @@ function _account_contents() {
       $link_options['attributes']['title'] = $link_label . ' ' . t('(Current page)');
     }
 
-    $login_output = '<p class="account__description mvn">' . l($link_label, 'user', $link_options) . '</p>';
+    $params['anonymous'] = l($link_label, 'user', $link_options);
+    $params['logout'] = NULL;
   }
 
-  return $login_output;
+  $output = theme('account', $params);
+  return $output;
 }
