@@ -23,7 +23,15 @@ function logo_theme() {
 
 function theme_logo($variables) {
 
-  $variables['logo'] = theme_get_setting('logo');
+  // $variables['logo'] = theme_get_setting('logo');
+  $logoColor = theme_get_setting('astarter_bannercolor');
+  if (isset($logoColor) && $logoColor == 'light') {
+    $variables['logo'] = base_path() . path_to_theme() . '/subtheme_child-light.svg';
+  }
+  else {
+    $variables['logo'] = base_path() . path_to_theme() . '/subtheme_child.svg';
+  }
+
   $variables['site_name'] = variable_get('site_name');
   $variables['site_slogan'] = variable_get('site_slogan');
 
