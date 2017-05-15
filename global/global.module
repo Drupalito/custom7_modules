@@ -1,0 +1,30 @@
+<?php
+
+/**
+ * @file
+ * Global Override module
+ *
+ * @ingroup global
+ */
+
+/**
+ * Implements hook_menu().
+ *
+ * @see hook_menu()
+ */
+function global_menu() {
+  $items = array();
+
+  $items['admin/config/astarter'] = array(
+    'title'            => variable_get('site_name', 'Drupal'),
+    'description'      => t('Custom modules configuration'),
+    'page callback'    => 'system_admin_menu_block_page',
+    'access arguments' => array('access administration pages'),
+    'position'         => 'left',
+    'weight'           => 99,
+    'file'             => 'system.admin.inc',
+    'file path'        => drupal_get_path('module', 'system'),
+  );
+
+  return $items;
+}
