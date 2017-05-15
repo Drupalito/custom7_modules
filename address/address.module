@@ -126,7 +126,7 @@ function address_form_system_site_information_settings_alter(&$form, &$form_stat
     '#description' => t("Email Format <strong>(ex: hello@company.com)</strong>"),
   );
   $form['sitecustom_callback']['sitecustom_phone1'] = array(
-    '#required' => TRUE,
+    '#required' => FALSE,
     '#type' => 'textfield',
     '#title' => t('Phone'),
     '#default_value' => variable_get('sitecustom_phone1', ''),
