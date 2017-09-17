@@ -11,3 +11,7 @@ Se rentre sur la page des modules Drupal 7. Chercher `scrolltotop` et l'activer.
 
 * `label` : Libellé du bouton (_exemple: Back to top_) ;
 * `icon` : Icone affiché via la librarie `fontawesome`.
+
+## License
+
+[GNU GPL V2.0](./LICENSE) &copy; [aQuELito](https://aquelito.fr/)
