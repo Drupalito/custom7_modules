@@ -1,11 +1,11 @@
 
 # Readme
 
-Ajoute un bloc permmettant d'afficher un lien de connexion. Si l'utilisateur est connecté, un lien "mon compte" sera affiché.
+Ajoute un bloc permmettant d'afficher un lien de connexion. Si l'utilisateur est connecté, un lien `mon compte` sera affiché.
 
 ## Installation
 
-Se rentre sur la page des modules Drupal 7. Chercher `scrolltotop` et l'activer.
+Se rentre sur la page des modules Drupal 7. Chercher `account` et l'activer.
 
 ## Configuration
 
