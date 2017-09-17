@@ -1,0 +1,16 @@
+
+.address {
+  display: table;
+  vertical-align: middle;
+}
+
+.address p {
+  margin: .5em 0 0;
+  font-size: 85%;
+}
+
+.address__logo {
+  display: table-cell;
+  vertical-align: top;
+  padding-right: 1em;
+}

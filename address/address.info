@@ -5,4 +5,6 @@ version = "7.x-1.0"
 core = 7.x
 package = astarter
 configure = admin/config/system/site-information
+
 dependencies[] = token
+dependencies[] = logo
