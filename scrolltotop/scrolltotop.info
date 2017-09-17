@@ -1,5 +1,5 @@
 
-name = "Scroll To Top"
+name = "Back To Top"
 description = "Add link to scroll to top"
 version = "7.x-1.0"
 core = 7.x
