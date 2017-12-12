@@ -237,8 +237,8 @@ function address_block_view($delta = '') {
   $block = array();
   switch ($delta) {
     case 'address':
-      $block['content'] = _address_contents();
-      $block['content']['#attached']['data']['css'][] = drupal_add_css($path_module . '/css/address.css');
+      $block['content']['#markup'] = _address_contents();
+      $block['content']['#attached']['data']['css'][] = drupal_add_css($module_path . '/css/address.css');
       break;
   }
   return $block;
