@@ -234,6 +234,7 @@ function address_block_info() {
  * @see hook_block_view()
  */
 function address_block_view($delta = '') {
+  $module_path = drupal_get_path('module', 'address');
   $block = array();
   switch ($delta) {
     case 'address':
