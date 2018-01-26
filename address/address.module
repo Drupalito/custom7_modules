@@ -62,7 +62,6 @@ function address_form_system_site_maintenance_mode_alter(&$form, &$form_state, $
       '#dialog' => TRUE,
     );
   }
-
 }
 
 /**
@@ -77,12 +76,6 @@ function address_form_system_site_information_settings_alter(&$form, &$form_stat
     '#type' => 'fieldset',
     '#title' => t('Informations'),
     '#weight' => 80,
-  );
-
-  $form['sitecustom']['sitecustom_name_hidden'] = array(
-    '#type'          => 'checkbox',
-    '#title'         => t('Hide website name'),
-    '#default_value' => variable_get('sitecustom_name_hidden', FALSE),
   );
 
   $site_system = variable_get('site_name');
@@ -155,9 +148,6 @@ function _address_submit_callback_settings($form, &$form_state) {
   if (!empty($values['sitecustom_name'])) {
     variable_set('sitecustom_name', $values['sitecustom_name']);
   }
-  if (!empty($values['sitecustom_name_hidden'])) {
-    variable_set('sitecustom_name_hidden', $values['sitecustom_name_hidden']);
-  }
   if (!empty($values['sitecustom_street_line_1'])) {
     variable_set('sitecustom_street_line_1', $values['sitecustom_street_line_1']);
   }
@@ -224,6 +214,7 @@ function address_block_info() {
     'cache'  => DRUPAL_NO_CACHE,
     'status' => TRUE,
     'region' => 'footer',
+    'mb_enabled' => TRUE, // Enable MultiBlock integration.
   );
   return $blocks;
 }
@@ -233,12 +224,33 @@ function address_block_info() {
  *
  * @see hook_block_view()
  */
-function address_block_view($delta = '') {
+function address_block_view($delta = '', $edit = NULL) {
   $module_path = drupal_get_path('module', 'address');
   $block = array();
   switch ($delta) {
     case 'address':
-      $block['content']['#markup'] = _address_contents();
+
+      // Check if multiblock module is in use.
+      $prefix = '';
+      if ($edit && isset($edit['multiblock_delta']['#value'])) {
+        $prefix = '_' . $edit['multiblock_delta']['#value'];
+      }
+
+
+      $params = array();
+      $params['name'] = variable_get('sitecustom_name');
+      $params['name_hidden'] = variable_get('sitecustom_name_hidden');
+      $params['street_line_1'] = variable_get('sitecustom_street_line_1');
+      $params['street_line_2'] = variable_get('sitecustom_street_line_2') ? variable_get('sitecustom_street_line_2') : NULL;
+      $params['postale_code'] = variable_get('sitecustom_postale_code');
+      $params['locality'] = variable_get('sitecustom_locality');
+      $params['email'] = variable_get('sitecustom_email');
+      $params['phone'] = variable_get('sitecustom_phone1') ? variable_get('sitecustom_phone1') : NULL;
+      $params['phone_link'] = variable_get('sitecustom_phone1') ? str_replace(' ', '', preg_replace('/^0/', '+33', variable_get('sitecustom_phone1'))) : NULL;
+      $params['fax'] = variable_get('sitecustom_fax1') ? variable_get('sitecustom_fax1') : NULL;
+      $params['options'] = variable_get('address' . $prefix . '_options', NULL);
+
+      $block['content']['#markup'] = theme('address', $params);
       $block['content']['#attached']['data']['css'][] = drupal_add_css($module_path . '/css/address.css');
       break;
   }
@@ -246,22 +258,66 @@ function address_block_view($delta = '') {
 }
 
 /**
- * Custom html block.
+ * Implements hook_block_configure().
+ *
+ * @param $delta
+ *   Unique ID of the block within the context of $module.
+ * @see hook_block_configure()
  */
-function _address_contents() {
+function address_block_configure($delta = '', $edit = NULL) {
+  $form = array();
 
-  $params = array();
-  $params['name'] = variable_get('sitecustom_name');
-  $params['name_hidden'] = variable_get('sitecustom_name_hidden');
-  $params['street_line_1'] = variable_get('sitecustom_street_line_1');
-  $params['street_line_2'] = variable_get('sitecustom_street_line_2') ? variable_get('sitecustom_street_line_2') : NULL;
-  $params['postale_code'] = variable_get('sitecustom_postale_code');
-  $params['locality'] = variable_get('sitecustom_locality');
-  $params['email'] = variable_get('sitecustom_email');
-  $params['phone'] = variable_get('sitecustom_phone1') ? variable_get('sitecustom_phone1') : NULL;
-  $params['phone_link'] = variable_get('sitecustom_phone1') ? str_replace(' ', '', preg_replace('/^0/', '+33', variable_get('sitecustom_phone1'))) : NULL;
-  $params['fax'] = variable_get('sitecustom_fax1') ? variable_get('sitecustom_fax1') : NULL;
+  switch ($delta) {
+    case 'address':
 
-  $output = theme('address', $params);
-  return $output;
+      // If MultiBlock is installed, pass the delta as a hidden value so we can
+      // retrieve the correct variable from the database in hook_block_save()
+      // implementation.
+      $prefix = '';
+      if ($edit && isset($edit['multiblock_delta'])) {
+        $form['multiblock_delta'] = array(
+          '#type' => 'value',
+          '#value' => $edit['multiblock_delta']['#value'],
+        );
+        $prefix = '_' . $edit['multiblock_delta']['#value'];
+      }
+
+      $default = array(
+        'hide_logo',
+        'hide_networks',
+      );
+
+      $options = array(
+        'hide_logo' => t('Hide Logo'),
+        'hide_sitename' => t('Hide sitename'),
+        'hide_address' => t('Hide address'),
+        'hide_email' => t('Hide email'),
+        'hide_phone1' => t('Hide phone number'),
+        'hide_networks' => t('Hide social networks profiles icons'),
+      );
+      $form['address_options'] = array(
+        '#type' => 'checkboxes',
+        '#title' => t('String Active'),
+        '#options' => $options,
+        '#default_value' => variable_get('address' . $prefix . '_options', $default),
+      );
+
+      break;
+  }
+  return $form;
+}
+
+/**
+ * Implements hook_block_save().
+ */
+function address_block_save($delta = '', $edit = array()) {
+  switch ($delta) {
+    case 'address':
+
+      $prefix = ($edit['module'] == 'multiblock') ? '_' . $edit['delta'] : '';
+
+      variable_set('address' . $prefix . '_options', $edit['address_options']);
+
+      break;
+  }
 }
