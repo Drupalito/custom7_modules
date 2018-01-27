@@ -1,24 +1,30 @@
 
 .scrollToTop {
   cursor: pointer;
+  margin-bottom: 0;
   display: block;
   position: fixed;
-  right: 0; bottom: 0;
+  right: 1.5em; bottom: 1.5em;
   z-index: 10;
-  margin-bottom: 0;
-  width: 2em;
-  height: 2em;
-  line-height: 2em;
+  width: 2.5em;
+  height: 2.5em;
+  line-height: 2.5em;
+  border-radius: 50%;
   text-align: center;
   border-bottom: 0;
   opacity: 0;
   font-size: 1em;
-  background: #000;
-  border-color: #000;
+  background: #333;
+  border-color: #333;
   color: #fff;
   visibility: hidden;
   overflow: hidden;
   transition: opacity .3s 0s, visibility 0s .3s;
+}
+
+.scrollToTop .fa {
+  position: relative;
+  top: -5px;
 }
 
 .scrollToTop-visible {
