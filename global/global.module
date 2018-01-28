@@ -28,3 +28,67 @@ function global_menu() {
 
   return $items;
 }
+
+/**
+ * Use some fancy magic to get the version number... or don't.
+ */
+function simple_version_callback() {
+  return TRUE;
+}
+
+/**
+ * Implements hook_libraries_info().
+ */
+function global_libraries_info() {
+  $libraries = array();
+
+  $libraries['bootstrap'] = array(
+    'version callback' => 'simple_version_callback',
+    'name' => 'bootstrap',
+    'files' => array(
+      'css'  => array(
+        'css/modal.css',
+        // 'css/collapse.css',
+        // 'css/tab.css',
+        'css/base.css',
+      ),
+      'js'  => array(
+        'js/base.js',
+        'js/modal.js',
+        // 'js/tab.js',
+        // 'js/affix.js',
+        // 'js/collapse.js',
+      ),
+    ),
+  );
+
+  $libraries['wow'] = array(
+    'version callback' => 'simple_version_callback',
+    'name' => 'wow',
+    'files' => array(
+      'css'  => array(
+        'animate.css',
+      ),
+      'js'  => array(
+        'wow.min.js',
+        'animation.js',
+      ),
+    ),
+  );
+
+  $libraries['owl-carousel'] = array(
+    'version callback' => 'simple_version_callback',
+    'name' => 'owl-carousel',
+    'files' => array(
+      'css'  => array(
+        'assets/owl.carousel.min.css',
+        'assets/owl.theme.default.min.css',
+      ),
+      'js'  => array(
+        'owl.carousel.min.js',
+      ),
+    ),
+  );
+
+  return $libraries;
+}
