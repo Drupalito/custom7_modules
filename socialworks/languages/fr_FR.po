@@ -1,0 +1,58 @@
+# $Id$
+#
+# French translation of Drupal (general)
+# Copyright YEAR NAME <EMAIL@ADDRESS>
+# Generated from files:
+#  socialworks.pages.inc: n/a
+#  socialworks.module: n/a
+#  socialworks.info: n/a
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"POT-Creation-Date: 2017-08-17 00:56+0200\n"
+"PO-Revision-Date: 2017-08-17 00:58+0200\n"
+"Language-Team: French <EMAIL@ADDRESS>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"X-Generator: Poedit 2.0.1\n"
+"Last-Translator: \n"
+"Language: fr_FR\n"
+
+#: socialworks.pages.inc:38
+msgid "Include block switch language"
+msgstr "Inclure le bloc de changement de langues"
+
+#: socialworks.pages.inc:44
+msgid "Activated profile"
+msgstr "Profile activé"
+
+#: socialworks.pages.inc:49
+msgid "Select social profils"
+msgstr "Sélectionner les réseaux sociaux"
+
+#: socialworks.pages.inc:56
+msgid "URL Profile"
+msgstr "Url du profil"
+
+#: socialworks.module:19 socialworks.info:0
+msgid "RSALC Profile"
+msgstr "RSALC Profile"
+
+#: socialworks.module:20 socialworks.info:0
+msgid "Add socials links to socials profiles"
+msgstr ""
+
+#: socialworks.module:50
+msgid "[custom] socialworks"
+msgstr "[custom] socialworks"
+
+#: socialworks.module:89
+msgid "Follow !sitename on !network (new window)."
+msgstr "Suivre !sitename sur !network (nouvelle fenêtre)."
+
+#: socialworks.info:0
+msgid "astarter"
+msgstr "astarter"

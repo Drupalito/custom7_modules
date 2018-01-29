@@ -1,5 +1,10 @@
-name = "Socialworks Block & Node"
-description = "Social Networks Company"
+name = "RSALC Profile"
+description = "Add socials links to socials profiles"
 version = "7.x-1.0"
 core = 7.x
 package = astarter
+
+configure = admin/config/astarter/socialworks
+
+files[] = socialworks.func.inc
+files[] = socialworks.pages.inc

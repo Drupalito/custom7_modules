@@ -2,88 +2,32 @@
 
 /**
  * @file
- * Social Networks Company
+ * Created block for socialworks
  *
  * @ingroup socialworks
  */
 
 /**
- * Social Networks options info callback.
+ * Implements hook_menu().
+ *
+ * @see hook_menu()
  */
-function socialworks_options_network() {
-  $socialnetworks = array(
-    'facebook'  => 'Facebook',
-    'twitter'   => 'Twitter',
-    'linkedin'  => 'Linkedin',
-    'pinterest' => 'Pinterest',
-    'googlep'   => 'Google Plus',
+function socialworks_menu() {
+  $items = array();
+
+  $items['admin/config/astarter/socialworks'] = array(
+    'title'            => t('RSALC Profile'),
+    'description'      => t('Add socials links to socials profiles'),
+    'page callback'    => 'drupal_get_form',
+    'page arguments'   => array('socialworks_form'),
+    'access arguments' => array('access administration pages'),
+    'type'             => MENU_NORMAL_ITEM,
+    'file'             => 'socialworks.pages.inc',
   );
-  return $socialnetworks;
+
+  return $items;
 }
 
-/**
- * Social links options info callback.
- */
-function socialworks_options_link() {
-  $socialinfos = array(
-    'facebook' => array(
-      'share' => array(
-        'url' => 'http://www.facebook.com/sharer.php?u=!node_url',
-        'title' => t('Share this post on Facebook'),
-      ),
-      'account' => array(
-        'url' => '',
-        'title' => t('Follow !sitename on Facebook'),
-        'image' => '306199',
-      ),
-    ),
-    'twitter' => array(
-      'share' => array(
-        'url' => 'http://twitter.com/share?text=!node_title&url=!node_url&via=!author',
-        'title' => t('Share this post on Twitter'),
-      ),
-      'account' => array(
-        'url' => 'https://twitter.com/',
-        'title' => t('Follow !sitename on Twitter'),
-        'image' => '26c4f1',
-      ),
-    ),
-    'linkedin' => array(
-      'share' => array(
-        'url' => 'http://www.linkedin.com/shareArticle?mini=true&url=!node_url',
-        'title' => t('Share this post on Link`'),
-      ),
-      'account' => array(
-        'url' => '',
-        'title' => t('Follow !sitename on Linkedin'),
-        'image' => '007bb6',
-      ),
-    ),
-    'pinterest' => array(
-      'share' => array(
-        'url' => 'http://pinterest.com/pin/create/button/?url=!node_url',
-        'title' => t('Share this post on Pinterest'),
-      ),
-      'account' => array(
-        'url' => '',
-        'title' => t('Follow !sitename on Pinterest'),
-        'image' => 'b81621',
-      ),
-    ),
-    'googlep' => array(
-      'share' => array(
-        'url' => 'https://plus.google.com/share?url=!node_url',
-        'title' => t('Share this post on Google+'),
-      ),
-      'account' => array(
-        'url' => '',
-        'title' => t('Follow !sitename on Google+'),
-        'image' => 'ce2616',
-      ),
-    ),
-  );
-  return $socialinfos;
-}
 
 /**
  * Implements hook_preprocess_block().
@@ -103,10 +47,12 @@ function socialworks_preprocess_block(&$variables, $hook) {
  */
 function socialworks_block_info() {
   $blocks['socialworks'] = array(
-    'info'   => t('[custom] Social Networks Compagny'),
-    'cache'  => DRUPAL_NO_CACHE,
-    'status' => TRUE,
-    'region' => 'footer',
+    'info'       => t('[custom] socialworks'),
+    'cache'      => DRUPAL_NO_CACHE,
+    'status'     => TRUE,
+    'region'     => 'footer',
+    'weight'     => 0,
+    'visibility' => BLOCK_VISIBILITY_NOTLISTED,
   );
   return $blocks;
 }
@@ -118,162 +64,50 @@ function socialworks_block_info() {
  */
 function socialworks_block_view($delta = '') {
   $block = array();
+
+  $path_module = drupal_get_path('module', 'socialworks');
+
   switch ($delta) {
     case 'socialworks':
-      $block['content'] = _socialworks_contents();
-      $block['content'] = array(
-        '#theme' => 'container',
-        '#children' => _socialworks_contents(),
-        '#attributes' => array(
-          'class' => array(
-            'socialworks',
-            'mvn',
-          ),
-        ),
-      );
+
+      $output_language = '';
+      if (module_exists('lang_dropdown') && variable_get('socialworks_language_chosse') == TRUE) {
+        $block_invoke = module_invoke('lang_dropdown', 'block_view', 'language');
+        $block_language = render($block_invoke['content']);
+        $output_language = '<li>' . $block_language . '</li>';
+      }
+
+      if (variable_get('socialworks_email') == TRUE) {
+        $output_language = '<li>' . l('<span class="fa fa-envolpe-o" aria-hidden="true"></span>', 'mailto:' + variable_get('sitecustom_email'), array(
+          'html' => true
+        )) . '</li>';
+      }
+
+      $social_networks_active = variable_get('socialworks_providers');
+      if (count($social_networks_active) >= 2) {
+
+        $markup[] = '<ul id="social-icons" class="list-inline social-icons mvm">';
+        foreach ($social_networks_active as $key => $value) {
+          if (!empty($value)) {
+            $social_networks_url = variable_get('socialworks_' . $key);
+            $markup[] = '<li class="social__item size-2x">' . l('<span class="icon icon-' . $key . '" aria-hidden="true"></span><span class="a11y">' . $value . '</span>', $social_networks_url, array(
+              'attributes' => array(
+                'title' => t('Follow !sitename on !network (new window).', array('!sitename' => variable_get('site_name'), '!network' => ucfirst($value))),
+                'class' => array('social__link'),
+                'rel' => array('external')
+              ),
+              'html' => TRUE
+            )) . '</li>';
+          }
+        }
+        $markup[] = $output_language;
+        $markup[] = '</ul><p class="mtm"><small>' . t('Copyright © !year !sitename', array('!year' => date('Y'), '!sitename' => variable_get('site_name'))) . '</small></p>';
+      }
+
+      $block['content']['#markup'] = implode('', $markup);
+      $block['content']['#attached']['data']['css'][] = drupal_add_css($path_module . '/css/socialworks.css');
+
       break;
   }
   return $block;
-}
-
-/**
- * Custom html block.
- */
-function _socialworks_contents() {
-  global $user;
-
-  $output = '';
-  $output .= '<p class="mvn"><span class="bold">' . t('Follow us') . '&nbsp;:</span><br />';
-
-  $array_social = socialworks_options_link();
-  $item_output = array();
-  foreach ($array_social as $key => $values) {
-    if (theme_get_setting('starter_company_' . $key)) {
-      $value = $values['account'];
-
-      $profile_url = $value['url'] . theme_get_setting('starter_company_' . $key);
-      $title = t($value['title'], array('!sitename' => variable_get('site_name')));
-      $image = '<img src="http://placehold.it/32/' . $value['image'] . '" width="32" height="32" alt="' . $title . '" />';
-
-      $item_output[] = l($image, $profile_url, array(
-        'attributes' => array(
-          'title' => $title,
-          'rel' => 'nofollow me',
-        ), 'html' => TRUE
-      ));
-    }
-  }
-
-  $output .= implode(' ', $item_output);
-  $output .= '</p>';
-
-  return $output;
-}
-
-/**
- * Implements hook_field_extra_fields().
- *
- * @see hook_field_extra_fields()
- */
-function socialworks_field_extra_fields() {
-  $extra['node']['article'] = array(
-    'display' => array(
-      'socialworks' => array(
-        'label' => t('Share current post'),
-        'description' => t('Share display icons networks.'),
-        'weight' => 99,
-      ),
-    ),
-  );
-  return $extra;
-}
-
-/**
- * Implements hook_node_view().
- *
- * @see hook_node_view()
- */
-function socialworks_node_view($node, $view_mode, $langcode) {
-  $extra = socialworks_field_extra_fields();
-  $config = field_bundle_settings('node', $node->type);
-
-  if ($view_mode == 'full' && $node->type == 'article') {
-    foreach ($extra['node'][$node->type]['display'] as $field_name => $field_info) {
-
-      $array_social = socialworks_options_link();
-
-      // Load our module's settings for the field, content type and view mode.
-      $format = variable_get('socialworks_' . $field_name . '_settings_node_' . $node->type . '_default');
-      $output_icon = array();
-      foreach ($format as $key => $value) {
-        $value = $array_social[$key]['share'];
-
-        $url_formate = t($value['url'], array(
-          '!node_title' => $node->title,
-          '!node_url' => url('node/' . $node->nid, array('absolute' => TRUE)),
-          '!author' => theme_get_setting('starter_company_' . $key),
-        ));
-
-        $output_icon[] = l('<span class=share__title"><span class="i i-' . $key . '"></span> ' . ucfirst($key) . '</span>', $url_formate, array(
-          'attributes' => array(
-            'title' => $value['title'],
-            'class' => 'share__link share__link--' . $key,
-            'rel' => 'nofollow me',
-          ), 'html' => TRUE
-        ));
-      }
-      $node->content['socialworks'] = array(
-        '#markup' => '<div class="share">' . implode(' ', $output_icon) . '</div>',
-      );
-    }
-  }
-}
-
-/**
- * Implements hook_form_field_ui_display_overview_form_alter().
- *
- * @see hook_form_field_ui_display_overview_form_alter()
- */
-function socialworks_form_field_ui_display_overview_form_alter(&$form, &$form_state) {
-
-  $extra = socialworks_field_extra_fields();
-  if (!isset($extra[$form['#entity_type']], $extra[$form['#entity_type']][$form['#bundle']])) {
-    return;
-  }
-
-  $extra_fields = array_keys($extra[$form['#entity_type']][$form['#bundle']]['display']);
-  $extra_fields = array_intersect($extra_fields, $form['#extra']);
-
-  if (empty($extra_fields)) {
-    return;
-  }
-
-  foreach ($extra_fields as $field_name) {
-    if (isset($field_name) && in_array($field_name, array('socialworks'))) {
-
-      $form['fields'][$field_name]['settings_edit'] = array(
-        '#type' => 'select',
-        '#options' => socialworks_options_network(),
-        '#default_value' => variable_get('socialworks_' . $field_name . '_settings_' . $form['#entity_type'] . '_' . $form['#bundle'] . '_' . $form['#view_mode']),
-        '#multiple' => TRUE,
-      );
-
-      $form['fields'][$field_name]['settings_summary']['#markup'] = '<div class="field-formatter-summary">' . t('Share links to display') . '</div>';
-    }
-  }
-  $form['#submit'][] = '_socialworks_field_date_settings_submit';
-}
-
-/**
- * Save the view mode settings for time format.
- */
-function _socialworks_field_date_settings_submit(&$form, &$form_state) {
-  $extra = socialworks_field_extra_fields();
-  $extra_fields = array_keys($extra[$form['#entity_type']][$form['#bundle']]['display']);
-
-  foreach ($extra_fields as $field_name) {
-    if (!empty($form_state['values']['fields'][$field_name]['settings_edit'])) {
-      variable_set('socialworks_' . $field_name . '_settings_' . $form['#entity_type'] . '_' . $form['#bundle'] . '_' . $form['#view_mode'], $form_state['values']['fields'][$field_name]['settings_edit']);
-    }
-  }
 }
