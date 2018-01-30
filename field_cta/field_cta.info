@@ -1,0 +1,15 @@
+name = "CTA Button"
+description = "Create field CTA display Calltoaction button or dropdown"
+version = "7.x-1.0"
+core = 7.x
+package = astarter
+
+configure = admin/config/astarter/field_cta
+
+files[] = field_cta.install
+files[] = field_cta.module
+
+; Dependencies
+dependencies[] = global
+dependencies[] = ctools
+dependencies[] = media

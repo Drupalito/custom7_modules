@@ -1,0 +1,421 @@
+<?php
+
+/**
+ * @file
+ * field_cta module.
+ * Display CTA field.
+ */
+
+/**
+ * Implements hook_field_info().
+ */
+function field_cta_field_info() {
+  return array(
+    'field_cta_id' => array(
+      'label' => t('Field Call To Action'),
+      'description' => '',
+      'default_widget' => 'field_cta_id_widget_default',
+      'default_formatter' => 'field_cta_id_formatter_default',
+    ),
+  );
+}
+
+/**
+ * Implements hook_field_widget_info().
+ */
+function field_cta_field_widget_info() {
+  return array(
+    'field_cta_id_widget_default' => array(
+      'label' => t('Default widget'),
+      'field types' => array('field_cta_id'),
+      'behaviors' => array(
+        'multiple values' => FIELD_BEHAVIOR_DEFAULT,
+        'default value' => FIELD_BEHAVIOR_DEFAULT,
+      ),
+    ),
+  );
+}
+
+/**
+ * Implements hook_field_widget_form().
+ */
+function field_cta_field_widget_form(&$form, &$form_state, $field, $instance, $langcode, $items, $delta, $element) {
+  switch ($instance['widget']['type']) {
+    case 'field_cta_id_widget_default':
+
+      $element['field_cta_id']['cta_link_label'] = array(
+        '#type' => 'textfield',
+        '#title' => t('Text label'),
+        '#default_value' => isset($items[$delta]['cta_link_label']) ? $items[$delta]['cta_link_label'] : NULL,
+      );
+      $element['field_cta_id']['columns']['cta_link_onlypdf'] = array(
+        '#type' => 'checkbox',
+        '#title' => t('Only PDF to direct download'),
+        '#default_value' => isset($items[$delta]['cta_link_onlypdf']) ? $items[$delta]['cta_link_onlypdf'] : NULL,
+      );
+      $element['field_cta_id']['columns']['container_display'] = array(
+        '#type' => 'fieldset',
+        '#title' => 'Link',
+        '#states' => array(
+          "visible" => array(
+            "input[name='field_cta[" . $langcode . "][" . $delta . "][field_cta_id][columns][cta_link_onlypdf]']" => array("checked" => FALSE)
+          ),
+        ),
+      );
+
+      $element['field_cta_id']['columns']['container_display']['cta_link_url'] = array(
+        '#title' => t('URL'),
+        '#type' => 'textfield',
+        '#default_value' => isset($items[$delta]['cta_link_url']) ? $items[$delta]['cta_link_url'] : NULL,
+        '#description' => t('Indicate a valid URL or node<br/>If you specify a youtube URL. The video will be viewed in a modal.'),
+      );
+      $element['field_cta_id']['columns']['container_display']['cta_link_target'] = array(
+        '#type' => 'checkbox',
+        '#title' => t('Open link in new window'),
+        '#default_value' => isset($items[$delta]['cta_link_target']) ? $items[$delta]['cta_link_target'] : NULL,
+      );
+      $element['field_cta_id']['columns']['container_filecta'] = array(
+        '#type' => 'fieldset',
+        '#title' => 'File direct download',
+        '#states' => array(
+          "visible" => array(
+            "input[name='field_cta[" . $langcode . "][" . $delta . "][field_cta_id][columns][cta_link_onlypdf]']" => array("checked" => TRUE)
+          ),
+        ),
+      );
+      $element['field_cta_id']['columns']['container_filecta']['cta_link_pdf'] = array(
+        '#type' => 'media',
+        '#title' => t('PDF Files'),
+        '#description' => t('Allowed extensions: pdf'),
+        '#upload_location' => 'public://cta_pdf/',
+        '#upload_validators' => array(
+          'file_validate_extensions' => array('pdf'),
+        ),
+        '#default_value' => isset($items[$delta]['cta_link_pdf']) ? $items[$delta]['cta_link_pdf'] : NULL,
+      );
+
+      /*
+       * FEATURE TODO
+       * Parametres youtube player
+       */
+      // drupal_add_js(drupal_get_path('module', 'field_cta') . '/js/states_cta.js');
+      // $element['field_cta_id']['columns']['container_filecta_test'] = array(
+      //   '#type' => 'fieldset',
+      //   '#title' => t('Youtube video options'),
+      //   '#states' => array(
+      //     "visible" => array(
+      //       "input[name='field_cta[" . $langcode . "][" . $delta . "][field_cta_id][columns][container_display][cta_link_url]']" => array('value' => array("regex" => "^(?:http(?:s)?:\/\/)?(?:www\.)?(?:m\.)?(?:youtu\.be\/|youtube\.com\/(?:(?:watch)?\?(?:.*&)?v(?:i)?=|(?:embed|v|vi|user)\/))([^\?&\"'>]+)"))
+      //     ),
+      //   ),
+      // );
+      // $element['field_cta_id']['columns']['container_filecta_test']['cta_video_muted'] = array(
+      //   '#type'          => 'checkbox',
+      //   '#title'         => t('Muted'),
+      //   '#default_value' => isset($items[$delta]['cta_video_muted']) ? $items[$delta]['cta_video_muted'] : NULL,
+      // );
+      // $element['field_cta_id']['columns']['container_filecta_test']['cta_video_autoplay'] = array(
+      //   '#type'          => 'checkbox',
+      //   '#title'         => t('Autoplay'),
+      //   '#default_value' => isset($items[$delta]['cta_video_autoplay']) ? $items[$delta]['cta_video_autoplay'] : NULL,
+      // );
+      // $element['field_cta_id']['columns']['container_filecta_test']['cta_video_loop'] = array(
+      //   '#type'          => 'checkbox',
+      //   '#title'         => t('Loop'),
+      //   '#default_value' => isset($items[$delta]['cta_video_loop']) ? $items[$delta]['cta_video_loop'] : NULL,
+      // );
+
+      $element['#title'] = t("Call To Action");
+      $element += array(
+        '#type' => 'fieldset',
+        '#collapsible' => TRUE,
+        '#collapsed' => FALSE,
+      );
+
+    break;
+  }
+  return $element;
+}
+
+/**
+ * Implements hook_field_validate().
+ */
+function field_cta_field_validate($entity_type, $entity, $field, $instance, $langcode, $items, &$errors) {
+  if ($field['type'] == 'field_cta_id') {
+    foreach ($items as $delta => $item) {
+      // If field is not considered empty, validate its data.
+      if (!field_cta_field_is_empty($item, $field)) {
+      }
+    }
+  }
+}
+
+/**
+ * Implements hook_preprocess_field().
+ */
+function field_cta_preprocess_field(&$variables) {
+  if ($variables['element']['#field_name'] == 'field_cta') {
+    array_unshift($variables['theme_hook_suggestions'], 'field__no_wrapper');
+  }
+}
+
+/**
+ * Implements hook_field_presave().
+ */
+function field_cta_field_presave($entity_type, $entity, $field, $instance, $langcode, &$items) {
+  // Structure the field data as expected by the database. Only act when the
+  // elements come nested as 'publisher_reference'. Otherwise, no change needed.
+  if (!empty($items) && $field['type'] == 'field_cta_id' && array_key_exists('field_cta_id', $items[0])) {
+    foreach ($items as $delta => $item) {
+      $items[$delta]['cta_link_label'] = $item['field_cta_id']['cta_link_label'];
+      $items[$delta]['cta_link_onlypdf'] = $item['field_cta_id']['columns']['cta_link_onlypdf'];
+      $items[$delta]['cta_link_url'] = $item['field_cta_id']['columns']['container_display']['cta_link_url'];
+      $items[$delta]['cta_link_target'] = $item['field_cta_id']['columns']['container_display']['cta_link_target'];
+      $items[$delta]['cta_link_pdf'] = $item['field_cta_id']['columns']['container_filecta']['cta_link_pdf'];
+    }
+  }
+}
+
+/**
+ * Implements hook_field_formatter_info().
+ */
+function field_cta_field_formatter_info() {
+  return array(
+    'field_cta_id_formatter_default' => array(
+      'label' => t('Default formatter'),
+      'field types' => array('field_cta_id'),
+    ),
+    'field_cta_id_formatter_dropdown' => array(
+      'label' => t('Dropdown formatter'),
+      'field types' => array('field_cta_id'),
+    ),
+  );
+}
+
+/**
+ * Implements hook_field_formatter_view().
+ */
+function field_cta_field_formatter_view($entity_type, $entity, $field, $instance, $langcode, $items, $display) {
+  $element = array();
+
+  switch ($display['type']) {
+    case 'field_cta_id_formatter_default':
+      foreach ($items as $delta => $item) {
+
+        $return_array = array(
+          'cta_link_label' => $item['cta_link_label'],
+          'cta_link_onlypdf' => $item['cta_link_onlypdf'],
+          'cta_link_url' => $item['cta_link_url'],
+          'cta_link_target' => $item['cta_link_target'],
+          'cta_link_pdf' => $item['cta_link_pdf'],
+        );
+
+        list($id, $vid, $bundle) = entity_extract_ids($entity_type, $entity);
+
+        $element[$delta]['field_cta_id_row']['content'] = array(
+          array(
+            '#theme' => 'cta_button',
+            '#items' => $return_array,
+            // '#attributes' => $attributes,
+            '#cta_id' => 'cta-' . $id . '-' . str_replace('_', '-', $instance['field_name']),
+            '#attached' => array(
+              'js' => array(
+                drupal_get_path('module', 'field_cta') . '/js/cta.js',
+              ),
+            ),
+            '#entity' => $entity,
+            '#entity_type' => $entity_type,
+          ),
+        );
+      }
+    break;
+    case 'field_cta_id_formatter_dropdown':
+      foreach ($items as $delta => $item) {
+
+        $languages = language_list();
+        $cta_link_items = array();
+        foreach ($languages as $key => $value) {
+
+          $translatedNodesArray = translation_node_get_translations($entity->tnid);
+          $wrapper_translated = isset($translatedNodesArray[$key]) ? node_load($translatedNodesArray[$key]->nid) : NULL;
+
+          if (isset($wrapper_translated)) {
+
+            $cta_onlypdf = $wrapper_translated->field_cta[LANGUAGE_NONE][0]['cta_link_onlypdf'];
+            if (!empty($cta_onlypdf)) {
+              $file = file_load($wrapper_translated->field_cta[LANGUAGE_NONE][0]['cta_link_pdf']);
+              $file_lang_url = file_create_url($file->uri);
+            }
+            else {
+              $file_lang_url = $wrapper_translated->field_cta[LANGUAGE_NONE][0]['cta_link_url'];
+            }
+
+            $cta_link_items[] = array(
+              'cta_link_label' => '[' . $value->native . '] ' . $wrapper_translated->field_cta[LANGUAGE_NONE][0]['cta_link_label'],
+              'cta_link_onlypdf' => $wrapper_translated->field_cta[LANGUAGE_NONE][0]['cta_link_onlypdf'],
+              'cta_link_url' => $file_lang_url,
+              'cta_link_target' => $wrapper_translated->field_cta[LANGUAGE_NONE][0]['cta_link_target'],
+              'cta_link_pdf' => $wrapper_translated->field_cta[LANGUAGE_NONE][0]['cta_link_pdf'],
+            );
+          }
+        }
+
+        $return_array = array(
+          'cta_link_label' => $item['cta_link_label'],
+          'cta_link_items' => $cta_link_items,
+        );
+
+        $element[$delta]['field_cta_id_row']['content'] = array(
+          array(
+            '#theme' => 'cta_dropdown',
+            '#items' => $return_array,
+            '#entity' => $entity,
+            '#entity_type' => $entity_type,
+          ),
+        );
+      }
+    break;
+  }
+  return $element;
+}
+
+function field_cta_theme() {
+  return array(
+    'cta_button' => array(
+      'variables' => array(
+        'items' => array(),
+        'cta_id' => NULL,
+        'attributes' => NULL,
+        'entity' => NULL,
+        'entity_type' => NULL,
+      ),
+      'template' => 'templates/cta-button',
+    ),
+    'cta_dropdown' => array(
+      'variables' => array(
+        'items' => array(),
+        'cta_id' => NULL,
+        'attributes' => NULL,
+        'entity' => NULL,
+        'entity_type' => NULL,
+      ),
+      'template' => 'templates/cta-dropdown',
+    ),
+  );
+}
+
+/**
+ * Implements hook_field_is_empty().
+ */
+function field_cta_field_is_empty($item, $field) {
+  if ($field['type'] == 'field_cta_id') {
+    return FALSE;
+  }
+}
+
+/**
+ * Implements hook_element_info().
+ */
+function field_cta_element_info() {
+  return array(
+    'field_cta_id' => array(
+      '#input' => TRUE,
+      '#tree' => TRUE,
+      '#theme_wrappers' => array('form_element'),
+      '#process' => array('_field_cta_field_process'),
+  ));
+}
+
+function _field_cta_field_process($element, $form_state, $complete_form) {
+  // $instance = field_widget_instance($element, $form_state);
+  // $settings = $instance['settings'];
+
+  // Create the form using Forms API.
+  $element['field_cta_id'] = array(
+    '#type' => 'fieldset',
+    '#collapsible' => TRUE,
+    '#collapsed' => FALSE,
+    '#title' => t('Call to action'),
+  );
+  $element['field_cta_id']['cta_link_label'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Text label'),
+    '#required' => TRUE,
+    '#default_value' => isset($element['#value']['link_label']) ? $element['#value']['link_label'] : NULL,
+  );
+  $element['field_cta_id']['columns']['cta_link_onlypdf'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Only PDF to direct download'),
+    '#default_value' => isset($element['#value']['link_onlypdf']) ? $element['#value']['link_onlypdf'] : NULL,
+  );
+  $element['field_cta_id']['columns']['container_display'] = array(
+    '#type' => 'fieldset',
+    '#title' => 'Link',
+    '#states' => array(
+      "visible" => array(
+        "input[name='" . implode('-', $element["#parents"]) . "[field_cta_id][columns][cta_link_onlypdf]']" => array("checked" => FALSE)
+      ),
+    ),
+  );
+  $element['field_cta_id']['columns']['container_display']['cta_link_url'] = array(
+    '#title' => t('URL'),
+    '#type' => 'textfield',
+    '#default_value' => isset($element['#value']['link_url']) ? $element['#value']['link_url'] : NULL,
+    '#description' => t('Indicate a valid URL or node<br/>If you specify a youtube URL. The video will be viewed in a modal.'),
+  );
+  $element['field_cta_id']['columns']['container_display']['cta_link_target'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Open link in new window'),
+    '#default_value' => isset($element['#value']['link_target']) ? $element['#value']['link_target'] : NULL,
+  );
+  $element['field_cta_id']['columns']['container_filecta'] = array(
+    '#type' => 'fieldset',
+    '#title' => 'File direct download',
+    '#states' => array(
+      "visible" => array(
+        "input[name='" . implode('-', $element["#parents"]) . "[field_cta_id][columns][cta_link_onlypdf]']" => array("checked" => TRUE)
+      ),
+    ),
+  );
+  $element['field_cta_id']['columns']['container_filecta']['cta_link_pdf'] = array(
+    '#type' => 'media',
+    '#title' => t('PDF Files'),
+    '#description' => t('Allowed extensions: pdf'),
+    '#upload_location' => 'public://cta_pdf/',
+    '#upload_validators' => array(
+      'file_validate_extensions' => array('pdf'),
+    ),
+    '#default_value' => isset($element['#value']['link_pdf']) ? $element['#value']['link_pdf'] : NULL,
+  );
+
+  /*
+   * FEATURE TODO
+   * Parametres youtube player
+   */
+  // drupal_add_js(drupal_get_path('module', 'field_cta') . '/js/states_cta.js');
+  // $element['field_cta_id']['columns']['container_filecta_test'] = array(
+  //   '#type' => 'fieldset',
+  //   '#title' => t('Youtube video options'),
+  //   '#states' => array(
+  //     "visible" => array(
+  //       "input[name='" . implode('-', $element["#parents"]) . "[field_cta_id][columns][container_display][cta_link_url]']" => array('value' => array("regex" => "^(?:http(?:s)?:\/\/)?(?:www\.)?(?:m\.)?(?:youtu\.be\/|youtube\.com\/(?:(?:watch)?\?(?:.*&)?v(?:i)?=|(?:embed|v|vi|user)\/))([^\?&\"'>]+)"))
+  //     ),
+  //   ),
+  // );
+  // $element['field_cta_id']['columns']['container_filecta_test']['cta_video_muted'] = array(
+  //   '#type'          => 'checkbox',
+  //   '#title'         => t('Muted'),
+  //   '#default_value' => isset($element['#value']['cta_video_muted']) ? $element['#value']['cta_video_muted'] : NULL,
+  // );
+  // $element['field_cta_id']['columns']['container_filecta_test']['cta_video_autoplay'] = array(
+  //   '#type'          => 'checkbox',
+  //   '#title'         => t('Autoplay'),
+  //   '#default_value' => isset($element['#value']['cta_video_autoplay']) ? $element['#value']['cta_video_autoplay'] : NULL,
+  // );
+  // $element['field_cta_id']['columns']['container_filecta_test']['cta_video_loop'] = array(
+  //   '#type'          => 'checkbox',
+  //   '#title'         => t('Loop'),
+  //   '#default_value' => isset($element['#value']['cta_video_loop']) ? $element['#value']['cta_video_loop'] : NULL,
+  // );
+
+  return $element;
+}

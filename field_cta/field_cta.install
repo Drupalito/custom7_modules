@@ -1,0 +1,63 @@
+<?php
+
+/**
+ * @file
+ * Install, update, and uninstall functions for the field_cta module.
+ */
+
+/**
+ * Implements hook_field_schema().
+ */
+function field_cta_field_schema($field) {
+  switch ($field['type']) {
+    case 'field_cta_id':
+      $columns = array(
+        'cta_link_label' => array(
+          'type' => 'varchar',
+          'length' => 255,
+          'not null' => FALSE,
+          'description' => '',
+        ),
+        'cta_link_onlypdf' => array(
+          'type' => 'int',
+          'size' => 'big',
+          'not null' => FALSE,
+          'description' => '',
+        ),
+        'cta_link_url' => array(
+          'type' => 'varchar',
+          'length' => 255,
+          'not null' => FALSE,
+          'description' => '',
+        ),
+        'cta_link_target' => array(
+          'type' => 'int',
+          'size' => 'big',
+          'not null' => FALSE,
+          'description' => '',
+        ),
+        'cta_link_pdf' => array(
+          'type' => 'int',
+          'unsigned' => TRUE,
+          'not null' => FALSE,
+          'description' => 'The {file_managed}.fid being referenced in this field.',
+        ),
+      );
+    break;
+  }
+  return array(
+    'columns' => $columns,
+  );
+}
+
+/**
+ * Implements hook_install().
+ */
+function field_cta_install() {
+}
+
+/**
+ * Implements hook_uninstall().
+ */
+function field_cta_uninstall() {
+}
