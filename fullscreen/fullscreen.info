@@ -1,0 +1,13 @@
+name = "Fullscreen"
+description = "Fullscreen mode image and video, add content type, block and views"
+version = "7.x-1.0"
+core = 7.x
+package = astarter
+
+configure = admin/config/astarter/fullscreen
+
+files[] = fullscreen.module
+
+dependencies[] = field_cta
+dependencies[] = views
+dependencies[] = link
