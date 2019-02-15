@@ -35,7 +35,7 @@ function theme_logo($variables) {
   $variables['site_name'] = variable_get('site_name');
   $variables['site_slogan'] = variable_get('site_slogan');
 
-  $alt = $variables['site_name'] . ' (' . t('Home') . ')';
+  $alt = $variables['site_name'] . ' - ' . t('Home') . '';
 
   if ($variables['site_name']) {
     $variables['attributes_site_name']['class'][] = 'logo__name';
