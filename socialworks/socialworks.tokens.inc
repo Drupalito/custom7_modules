@@ -22,7 +22,6 @@ function socialworks_token_info() {
     'linkedin'    => 'Linkedin',
     'twitter'     => 'Twitter',
     'instagram'   => 'Instagram',
-    'google-plus' => 'Google plus',
     'youtube'     => 'Youtube',
   );
 
@@ -53,7 +52,6 @@ function socialworks_tokens($type, $tokens, array $data = array(), array $option
     'linkedin'    => 'Linkedin',
     'twitter'     => 'Twitter',
     'instagram'   => 'Instagram',
-    'google-plus' => 'Google plus',
     'youtube'     => 'Youtube',
   );
 

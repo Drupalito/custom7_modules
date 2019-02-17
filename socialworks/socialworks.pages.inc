@@ -18,7 +18,6 @@ function socialworks_form($form, &$form_state) {
     'linkedin'    => 'Linkedin',
     'twitter'     => 'Twitter',
     'instagram'   => 'Instagram',
-    'google-plus' => 'Google plus',
     'youtube'     => 'Youtube',
   );
 
@@ -27,7 +26,6 @@ function socialworks_form($form, &$form_state) {
     'linkedin'    => 'https://www.linkedin.com/company/limpida',
     'twitter'     => 'https://twitter.com/limpida_',
     'instagram'   => '',
-    'google-plus' => '',
     'youtube'     => '',
   );
 
