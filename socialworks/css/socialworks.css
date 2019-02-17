@@ -4,10 +4,6 @@
 }
 
 .social__item a {
-  /*display: inline-block;
-  vertical-align: middle;
-  text-align: center;
-  font-size: 100%;*/
   padding: 0 .25em;
   border-bottom: 0;
   transition-timing-function: ease-in;
@@ -15,7 +11,7 @@
   transition-duration: .20s;
 }
 
-.block--rsalc-url a:hover,
-.block--rsalc-url a:focus {
-  color: #f49500;
+.block--socialworks a:hover,
+.block--socialworks a:focus {
+  color: #333;
 }
