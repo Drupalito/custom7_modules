@@ -1,6 +1,6 @@
 
 <div class="account">
-  <p class="account__description mvn">
+  <p class="account__description my-0">
     <?php if (isset($profil)) : ?>
       <span class="account__nickname"><?php print $profil; ?></span>
       (<?php print $logout; ?>)
