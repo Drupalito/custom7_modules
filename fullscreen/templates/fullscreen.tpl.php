@@ -28,12 +28,12 @@
               <p class="fullscreen__title"><?php print $title; ?></p>
             <?php endif; ?>
             <?php if (!empty($excerpt)): ?>
-              <div class="mtl clearfix">
+              <div class="mt-4 clearfix">
                 <p class="fullscreen__description"><?php print $excerpt; ?></p>
               </div>
             <?php endif; ?>
             <?php if (!empty(trim(render($cta)))): ?>
-              <div class="fullscreen__calltoaction mtl">
+              <div class="fullscreen__calltoaction mt-4">
                 <?php print render($cta); ?>
               </div>
             <?php endif; ?>
